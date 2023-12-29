@@ -1,0 +1,11 @@
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation project(':camanchaca-largo-plazo-Business')
+    implementation project(':camanchaca-largo-plazo-Domain')
+
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+}

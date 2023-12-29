@@ -1,0 +1,57 @@
+db:
+  host: ${HOST_DB:34.69.17.120}
+  port: 3307
+  database: planificacion_largo_plazo
+  username: developer
+  password: qT4Y72ZFoxzQ
+
+local:
+  private-bq: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC2Zko1TtiOL7iD
+    z4LoLtgGDmELYxRw+41z7p9fFFtZkGTZZtojDASNwzxGWEzhPHoxDOaXBW7c4D40
+    MoRuDwCUuaSajIbd1JN+icAW+t/y4Rwhd+DDA7szmJbVaf+MMf2WfFjBi05SAmWc
+    Qo5mW3nhlI0OcXeVUGb3ZBzjvXj00bGEnVRKwRMnHMjRz5+IAkE/frR+OLAdajNc
+    Lf6nrGt7LsppXRKMtQMncg+rZhukjDCZKCEEfYidgFNL1GfXQ8aYr9wbx2G0GeMp
+    T9j2UotPPwdkAcXurvn/V5bMTPaJAJ0TOC4CRiwx1MWIvYNHPid+Us1MAsGGznx5
+    ZDU5M2a9AgMBAAECggEAEvEC7k/Cjdt3TBrh04Y/0TsviTzwC76XxS0H2FoXFXE5
+    A9maOA8Arw8SBJUZYL+EyfC2xoKeLWpNE2MWnQ5KR2eS6CjFPaacbYTVEZ3aYVDO
+    uMwH54CM8XH8Yeu4ycCMPtMpbWnvx3Tvw98mhgskWFByqIgQfM1FcBXxqRXNSJEM
+    OhfZph21s0ij2RdGsgnJOpJ6YeThgCum31R2pHKgyBE3t61ChEIdg5kL5Fb6GvbP
+    y3V7qBct4FPseXentWFQVUallnFZe6HhhbSdLgL/qWyZgp+1s7Pq+/ViLDITwZgU
+    0rXhWezo6sOJkwOa8AZNzPi0ngGilYpwt6BAfjNVUQKBgQDeOXpBQPmjMtG3SS5h
+    alssehLIX1NzW8FboFjoITd4WrhOwIeGmp13WWE302RxCzfWdwaASdnufQ16idj6
+    o9SKmXGHVdVNlCzRGKdPG4SON4SPdWWoiXoYWt+wLLgsM/jbbUBxZkCSdFQH2QsK
+    eKNDkZ9cBrdhajWM9YT2MTtpbQKBgQDSH0PsFFhIIR4pC0DomsL9sxX0U1vcaZi0
+    Q2KWlI1o6WAU9H0bHjgXhM7M8IvF2nkLoSgyX18wyPQjRKvkU7xbPhcE2MsQovbC
+    lK7JdRYXLog+xGzqC14QJiITpVYbOgm+ZwU1yO8fOIjhoDFjOG0s8btUNHYmZNYp
+    3QCnSwFwkQKBgCtFM9nq5fDyH0W6GS7cv74MUwXzEdO/hQnrUgR5G0zzFTo4YOtD
+    xe+MVtLA9ajRT2ESMhDe0HGQpgQ7PSWoquUF9cYtX2hItuVMEJ/lssziYIxyhoXn
+    pv+BCldKjd4FjKplPowWJfKedhJFH9I9JUUt4MLRh/mO7bhxwh8R/QiNAoGBAMxF
+    WOLJZIm6qHd+WTvIOIgq8cz0vPkqLyoP2GhLQq4bMy0sAfO7DQzQL7tMnpVaLxL/
+    OPS/gusKcU1YFUODpDmPwxETMVabFwlTQhjXmwIuWoWqr7dYFbndWIOA2JTfd1mD
+    Da2cCdtwOqId+eVblcd7uYHC/pmUrh9Emr4ITP4BAoGBAKzD9wnvILNjejbHVSf8
+    20mT51RNv5c41Sbt8Z0gzxeoJJeTwS9yH61rxZp1GjYxn0adrtGcJYy6HoMZcP5r
+    tUFUuNNzuWV3I7imYB3GX5YBZzbF7J+ODiEJkoOEBnfeKivIJ64m0M/BlREkoQF6
+    +sj0TLYoTUVJ41M1RHmCptXS
+    -----END PRIVATE KEY-----
+
+
+bigquery:
+  project-id: ${PROJECT_ID:datalikecorp}
+  client-id: ${CLIENT_ID:106629867547536498653}
+  client-email: ${CLIENT_EMAIL:proyecto-optimus-salmones@datalikecorp.iam.gserviceaccount.com}
+  private-key: ${PRIVATE_KEY:${local.private-bq}}
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  r2dbc:
+    url: "r2dbc:postgresql://${db.host}:5432/${db.database}"
+    username: ${db.username}
+    password: ${db.password}
+
+logging:
+  level:
+    org:
+      springframework: INFO

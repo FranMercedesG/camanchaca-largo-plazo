@@ -1,0 +1,47 @@
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = JavaVersion.VERSION_11
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
+    }
+    test {
+        useJUnitPlatform()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+        implementation 'org.slf4j:slf4j-api:1.7.36'
+// https://mvnrepository.com/artifact/io.projectreactor/reactor-core
+        implementation group: 'io.projectreactor', name: 'reactor-core', version: '3.5.8'
+
+
+        //Testing
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitPlatformVersion}"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitPlatformVersion}"
+        // https://mvnrepository.com/artifact/junit/junit
+        testImplementation 'junit:junit:4.13.2'
+        // https://mvnrepository.com/artifact/org.mockito/mockito-core
+        testImplementation 'org.mockito:mockito-core:5.1.1'
+        // https://mvnrepository.com/artifact/org.assertj/assertj-core
+        testImplementation 'org.assertj:assertj-core:3.24.2'
+
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
+//        testImplementation "org.springframework.boot:spring-boot-starter-test:2.7.14"
+    }
+
+}
