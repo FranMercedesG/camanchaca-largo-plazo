@@ -1,19 +1,19 @@
-name: 'Deploy Cloud Run Parameterization Services'
+name: 'Deploy Cloud Run Transversal Services'
 
 on:
   push:
     paths-ignore:
-      - 'Apps/corto_plazo/biomass/**'
-      - 'Apps/corto_plazo/capacity/**'
-      - 'Apps/corto_plazo/optimization/**'
-      - 'Apps/corto_plazo/orders/**'
-      - 'Apps/corto_plazo/transversal/**'
+      - 'Apps/largo_plazo/biomass/**'
+      - 'Apps/largo_plazo/capacity/**'
+      - 'Apps/largo_plazo/optimization/**'
+      - 'Apps/largo_plazo/orders/**'
+      - 'Apps/largo_plazo/parameterization/**'
     branches:  ["main", "dev"]
 
 env:
   GCP_REGION: us-central1
-  IMAGE_NAME: parameterization
-  APP_DIR: Apps/corto_plazo/parameterization
+  IMAGE_NAME: transversal
+  APP_DIR: Apps/largo_plazo/transversal
   REGISTRY: us-central1-docker.pkg.dev
 
 jobs:
@@ -30,24 +30,24 @@ jobs:
         run: |-
           if [[ "${{ github.base_ref }}" == "main" || "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "GCP_PROJECT=camanchaca-portalplanificacion" >> $GITHUB_ENV
-            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-corto-plazo-prodigio-registry" >> $GITHUB_ENV
+            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-largo-plazo-prodigio-registry" >> $GITHUB_ENV
             echo "NODE_ENV=PROD" >> $GITHUB_ENV
           fi
 
           if [[ "${{ github.base_ref }}" == "dev" || "${{ github.ref }}" == "refs/heads/dev" ]]; then
             echo "GCP_PROJECT=camanchaca-portalplanificacion" >> $GITHUB_ENV
-            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-corto-plazo-prodigio-registry" >> $GITHUB_ENV
+            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-largo-plazo-prodigio-registry" >> $GITHUB_ENV
             echo "NODE_ENV=DEV" >> $GITHUB_ENV
           fi
 
       - uses: 'actions/checkout@v4'
-
+      
       - name: Kiuwan Baseline Analysis
         uses: 'lsacera/KiuwanBaselineAction@v1.0'
         with:
-          project: camanchaca-corto_plazo-parameterization
+          project: camanchaca-largo_plazo-transversal
           userid: ${{ secrets.KIUWAN_USER }}
-          password: ${{ secrets.KIUWAN_PASS }}      
+          password: ${{ secrets.KIUWAN_PASS }}
       
       - uses: 'gradle/gradle-build-action@v2'
 

@@ -1,19 +1,19 @@
-name: 'Deploy Cloud Run Orders Services'
+name: 'Deploy Cloud Run Capacity Services'
 
 on:
   push:
     paths-ignore:
-      - 'Apps/corto_plazo/biomass/**'
-      - 'Apps/corto_plazo/capacity/**'
-      - 'Apps/corto_plazo/optimization/**'
-      - 'Apps/corto_plazo/parameterization/**'
-      - 'Apps/corto_plazo/transversal/**'
+      - 'Apps/largo_plazo/biomass/**'
+      - 'Apps/largo_plazo/optimization/**'
+      - 'Apps/largo_plazo/orders/**'
+      - 'Apps/largo_plazo/parameterization/**'
+      - 'Apps/largo_plazo/transversal/**'
     branches:  ["main", "dev"]
 
 env:
   GCP_REGION: us-central1
-  IMAGE_NAME: orders
-  APP_DIR: Apps/corto_plazo/orders
+  IMAGE_NAME: capacity
+  APP_DIR: Apps/largo_plazo/capacity
   REGISTRY: us-central1-docker.pkg.dev
 
 jobs:
@@ -30,13 +30,13 @@ jobs:
         run: |-
           if [[ "${{ github.base_ref }}" == "main" || "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "GCP_PROJECT=camanchaca-portalplanificacion" >> $GITHUB_ENV
-            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-corto-plazo-prodigio-registry" >> $GITHUB_ENV
+            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-largo-plazo-prodigio-registry" >> $GITHUB_ENV
             echo "NODE_ENV=PROD" >> $GITHUB_ENV
           fi
 
           if [[ "${{ github.base_ref }}" == "dev" || "${{ github.ref }}" == "refs/heads/dev" ]]; then
             echo "GCP_PROJECT=camanchaca-portalplanificacion" >> $GITHUB_ENV
-            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-corto-plazo-prodigio-registry" >> $GITHUB_ENV
+            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-largo-plazo-prodigio-registry" >> $GITHUB_ENV
             echo "NODE_ENV=DEV" >> $GITHUB_ENV
           fi
 
@@ -45,7 +45,7 @@ jobs:
       - name: Kiuwan Baseline Analysis
         uses: 'lsacera/KiuwanBaselineAction@v1.0'
         with:
-          project: camanchaca-corto_plazo-orders
+          project: camanchaca-largo_plazo-capacity
           userid: ${{ secrets.KIUWAN_USER }}
           password: ${{ secrets.KIUWAN_PASS }}     
 
