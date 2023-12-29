@@ -1,9 +1,9 @@
-name: 'Deploy Cloud Run Biomass Services'
+name: 'Deploy Cloud Run Capacity Services'
 
 on:
   push:
     paths-ignore:
-      - 'Apps/corto_plazo/capacity/**'
+      - 'Apps/corto_plazo/biomass/**'
       - 'Apps/corto_plazo/optimization/**'
       - 'Apps/corto_plazo/orders/**'
       - 'Apps/corto_plazo/parameterization/**'
@@ -12,8 +12,8 @@ on:
 
 env:
   GCP_REGION: us-central1
-  IMAGE_NAME: biomass
-  APP_DIR: Apps/corto_plazo/biomass
+  IMAGE_NAME: capacity
+  APP_DIR: Apps/corto_plazo/capacity
   REGISTRY: us-central1-docker.pkg.dev
 
 jobs:
@@ -41,7 +41,14 @@ jobs:
           fi
 
       - uses: 'actions/checkout@v4'
-      
+
+      - name: Kiuwan Baseline Analysis
+        uses: 'lsacera/KiuwanBaselineAction@v1.0'
+        with:
+          project: camanchaca-corto_plazo-capacity
+          userid: ${{ secrets.KIUWAN_USER }}
+          password: ${{ secrets.KIUWAN_PASS }}     
+
       - uses: 'gradle/gradle-build-action@v2'
 
       - name: Run build with Gradle Wrapper
