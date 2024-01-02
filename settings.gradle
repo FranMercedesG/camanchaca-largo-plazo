@@ -10,6 +10,7 @@ pluginManagement {
 rootProject.name = 'camanchaca'
 
 String camanchacaFolderApps = 'largo_plazo'
+String rootModulesName = 'camanchaca-largo-plazo'
 
 
 //Add generic name to all modules
@@ -33,7 +34,7 @@ buildFiles.each { File buildFile ->
     if(buildFile.parentFile.parentFile.name.equals(camanchacaFolderApps)) {
 			project.name = buildFile.parentFile.parentFile.name + '-' + projectName
 		}else{
-			project.name = rootProject.name + '-' + projectName
+			project.name = rootModulesName + '-' + projectName
 		}
 		project.projectDir = buildFile.parentFile
 		project.buildFileName = buildFile.name
