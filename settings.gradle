@@ -30,7 +30,7 @@ buildFiles.each { File buildFile ->
 		String projectPath = ':' + projectName
 		include projectPath
 		def project = findProject("${projectPath}")
-		if(buildFile.parentFile.parentFile.name.equals(camanchacaFolderApps)) {
+    if(buildFile.parentFile.parentFile.name.equals(camanchacaFolderApps)) {
 			project.name = buildFile.parentFile.parentFile.name + '-' + projectName
 		}else{
 			project.name = rootProject.name + '-' + projectName
