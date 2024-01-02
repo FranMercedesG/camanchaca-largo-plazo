@@ -41,6 +41,12 @@ jobs:
             echo "NODE_ENV=DEV" >> $GITHUB_ENV
           fi
 
+          if [[ "${{ github.base_ref }}" == "qa" || "${{ github.ref }}" == "refs/heads/qa" ]]; then
+            echo "GCP_PROJECT=optimus-393317" >> $GITHUB_ENV
+            echo "CONTAINER_REPO=optimus-393317/camanchaca-registry" >> $GITHUB_ENV
+            echo "NODE_ENV=QA" >> $GITHUB_ENV
+          fi
+
       - uses: 'actions/checkout@v4'
       
       - uses: 'gradle/gradle-build-action@v2'
