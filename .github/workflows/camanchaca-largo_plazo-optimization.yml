@@ -8,7 +8,8 @@ on:
       - 'Apps/largo_plazo/orders/**'
       - 'Apps/largo_plazo/parameterization/**'
       - 'Apps/largo_plazo/transversal/**'
-    branches:  ["main", "dev"]
+      - '.github/workflows/*'
+    branches:  ["main", "dev", "qa"]
 
 env:
   GCP_REGION: us-central1

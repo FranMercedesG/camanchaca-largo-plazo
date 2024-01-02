@@ -7,7 +7,7 @@ spec:
     spec:
       serviceAccountName: $CLOUD_RUN_SERVICE_ACCOUNT
       containers:
-      - image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+      - image: $REGISTRY_IMAGE:$GITHUB_SHA
         env:
         - name: NODE_ENV
           value: $NODE_ENV

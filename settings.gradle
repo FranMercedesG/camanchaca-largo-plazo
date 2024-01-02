@@ -9,6 +9,8 @@ pluginManagement {
 
 rootProject.name = 'camanchaca'
 
+String camanchacaFolderApps = 'largo_plazo'
+
 
 //Add generic name to all modules
 FileTree buildFiles = fileTree(rootDir) {
@@ -28,7 +30,11 @@ buildFiles.each { File buildFile ->
 		String projectPath = ':' + projectName
 		include projectPath
 		def project = findProject("${projectPath}")
-		project.name = buildFile.parentFile.parentFile.name + '-' + projectName
+		if(buildFile.parentFile.parentFile.name.equals(camanchacaFolderApps)) {
+			project.name = buildFile.parentFile.parentFile.name + '-' + projectName
+		}else{
+			project.name = rootProject.name + '-' + projectName
+		}
 		project.projectDir = buildFile.parentFile
 		project.buildFileName = buildFile.name
 
