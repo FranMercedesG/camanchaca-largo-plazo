@@ -30,14 +30,14 @@ jobs:
         id: set_variables
         run: |-
           if [[ "${{ github.base_ref }}" == "main" || "${{ github.ref }}" == "refs/heads/main" ]]; then
-            echo "GCP_PROJECT=camanchaca-portalplanificacion" >> $GITHUB_ENV
-            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-largo-plazo-prodigio-registry" >> $GITHUB_ENV
+            echo "GCP_PROJECT=optimus-393317" >> $GITHUB_ENV
+            echo "CONTAINER_REPO=optimus-393317/camanchaca-registry" >> $GITHUB_ENV
             echo "NODE_ENV=PROD" >> $GITHUB_ENV
           fi
 
           if [[ "${{ github.base_ref }}" == "dev" || "${{ github.ref }}" == "refs/heads/dev" ]]; then
-            echo "GCP_PROJECT=camanchaca-portalplanificacion" >> $GITHUB_ENV
-            echo "CONTAINER_REPO=camanchaca-portalplanificacion/camanchaca-largo-plazo-prodigio-registry" >> $GITHUB_ENV
+            echo "GCP_PROJECT=optimus-393317" >> $GITHUB_ENV
+            echo "CONTAINER_REPO=optimus-393317/camanchaca-registry" >> $GITHUB_ENV
             echo "NODE_ENV=DEV" >> $GITHUB_ENV
           fi
 
