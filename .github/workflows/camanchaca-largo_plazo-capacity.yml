@@ -13,7 +13,7 @@ on:
 
 env:
   GCP_REGION: us-central1
-  IMAGE_NAME: capacity
+  IMAGE_NAME: capacity-largo-plazo
   APP_DIR: Apps/largo_plazo/capacity
   REGISTRY: us-central1-docker.pkg.dev
 

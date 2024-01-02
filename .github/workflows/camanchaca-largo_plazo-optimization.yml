@@ -13,7 +13,7 @@ on:
 
 env:
   GCP_REGION: us-central1
-  IMAGE_NAME: optimization
+  IMAGE_NAME: optimization-largo-plazo
   APP_DIR: Apps/largo_plazo/optimization
   REGISTRY: us-central1-docker.pkg.dev
 

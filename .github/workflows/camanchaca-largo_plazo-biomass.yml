@@ -13,7 +13,7 @@ on:
 
 env:
   GCP_REGION: us-central1
-  IMAGE_NAME: biomass
+  IMAGE_NAME: biomass-largo-plazo
   APP_DIR: Apps/largo_plazo/biomass
   REGISTRY: us-central1-docker.pkg.dev
 
