@@ -64,9 +64,9 @@ public class GroupMaxExcelAdapter implements ExcelRepository<GroupSizeMaximum> {
         return Mono.zip(groupRepository.getAll()
                         .collectMap(Group::getName, Group::getId)
                         ,sizeRepository.getAll()
-                                .collectMap(size -> size.nameColunm(), Size::getId),
+                                .collectMap(Size::nameColunm, Size::getId),
                         sizeRepository.getAll()
-                                .collectMap(size -> size.nameColunm(), Size::getPieceType)
+                                .collectMap(Size::nameColunm, Size::getPieceType)
                         )
                 .map(tuple -> {
                     Map<String, UUID> groupsMap = tuple.getT1();

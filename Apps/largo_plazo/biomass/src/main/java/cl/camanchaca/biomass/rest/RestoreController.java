@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @RequiredArgsConstructor
 public class RestoreController {
 
-    private final String URL_BASE = "/restore/biomass";
+    private static final String URL_BASE = "/restore/biomass";
 
     @Bean
     public RouterFunction<ServerResponse> restoreBiomass(RestoreBIomassUseCase useCase) {
@@ -26,6 +26,7 @@ public class RestoreController {
                                 .flatMap(string -> ServerResponse.ok()
                                         .bodyValue(string));
                     } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                         return ServerResponse.badRequest()
                                 .build();
                     }

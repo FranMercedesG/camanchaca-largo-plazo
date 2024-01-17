@@ -40,6 +40,7 @@ public class GetWeeklyAvailableBiomassBQUseCase extends Usecase<RequestParams, M
                                 );
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        Thread.currentThread().interrupt();
                         return Mono.error(new BusinessError(e.getMessage()));
                     }
                 })

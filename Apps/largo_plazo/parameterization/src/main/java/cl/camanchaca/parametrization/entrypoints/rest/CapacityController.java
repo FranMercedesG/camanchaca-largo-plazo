@@ -3,9 +3,8 @@ package cl.camanchaca.parametrization.entrypoints.rest;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.usecases.largoplazo.parameters.GetParameterCapacityByCodeUseCase;
 import cl.camanchaca.business.usecases.largoplazo.parameters.GetParameterCapacityUseCase;
-import cl.camanchaca.business.usecases.largoplazo.parameters.GetParameterGroupByCodeUseCase;
 import cl.camanchaca.business.usecases.largoplazo.parameters.SaveParameterCapacityUseCase;
-
+import cl.camanchaca.business.usecases.largoplazo.parameters.*;
 import cl.camanchaca.business.usecases.shared.ReadExcel;
 import cl.camanchaca.domain.dtos.ParameterCapacityDTO;
 import cl.camanchaca.domain.models.product.ProductCapacity;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -35,7 +35,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class CapacityController {
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/parameters/capacity";
+    private static final String URL_BASE = "/parameters/capacity";
 
 
     @Bean
@@ -93,9 +93,7 @@ public class CapacityController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest(throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 
@@ -108,16 +106,33 @@ public class CapacityController {
                         request.bodyToFlux(ParameterCapacityDTO.class)
                 )
                         .collectList()
-                        .flatMapMany(useCase::apply)
+                        .flatMapMany(useCase)
                         .collectList()
                         .flatMap(s ->
                                 ServerResponse.ok()
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest(throwable)
+                        .onErrorResume(errorhandler::badRequest)
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> downloadCapacity(DownloadParameterCapacityUseCase useCase) {
+        return RouterFunctions.route(
+                RequestPredicates.GET(URL_BASE + "/excel/download"),
+                request -> useCase.apply()
+                        .flatMap(data -> {
+                                    HttpHeaders headers = new HttpHeaders();
+                                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                                    headers.setContentDispositionFormData("attachment", "capacity_parameter.xlsx");
+                                    return ServerResponse.ok()
+                                            .headers(h -> h.putAll(headers))
+                                            .bodyValue(data);
+                                }
                         )
+                        .switchIfEmpty(ServerResponse.notFound().build())
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 

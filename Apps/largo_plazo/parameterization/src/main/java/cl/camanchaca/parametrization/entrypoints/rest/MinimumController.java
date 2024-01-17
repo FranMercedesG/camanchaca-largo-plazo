@@ -3,31 +3,27 @@ package cl.camanchaca.parametrization.entrypoints.rest;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.usecases.largoplazo.parameters.GetParameterMinimunAsignationByCodeUseCase;
 import cl.camanchaca.business.usecases.largoplazo.parameters.GetParameterMinimunAsignationUseCase;
-import cl.camanchaca.business.usecases.largoplazo.parameters.SaveParameterGroupUseCase;
 import cl.camanchaca.business.usecases.largoplazo.parameters.SaveParameterMinimumUseCase;
+import cl.camanchaca.business.usecases.largoplazo.parameters.*;
 import cl.camanchaca.business.usecases.shared.ReadExcel;
-import cl.camanchaca.domain.dtos.ParameterGroupDTO;
 import cl.camanchaca.domain.dtos.ParameterMinimumDTO;
-import cl.camanchaca.domain.models.product.ProductGroup;
 import cl.camanchaca.domain.models.product.ProductMinimum;
 import cl.camanchaca.generics.MainErrorhandler;
 import cl.camanchaca.parametrization.utils.InputStreamUtils;
 import cl.camanchaca.parametrization.validations.ParametersValidations;
-import cl.camanchaca.parametrization.validations.ValidationsGroup;
 import cl.camanchaca.parametrization.validations.ValidationsMinimum;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import org.xml.sax.ErrorHandler;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
@@ -40,7 +36,7 @@ public class MinimumController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/parameters/minimum";
+    private static final String URL_BASE = "/parameters/minimum";
 
     @Bean
     public RouterFunction<ServerResponse> getMinimunAsignation(GetParameterMinimunAsignationUseCase useCase) {
@@ -96,9 +92,7 @@ public class MinimumController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest(throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 
@@ -118,9 +112,26 @@ public class MinimumController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest(throwable)
+                        .onErrorResume(errorhandler::badRequest)
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> downloadMinimum(DownloadParameterMinimumUseCase useCase) {
+        return RouterFunctions.route(
+                RequestPredicates.GET(URL_BASE + "/excel/download"),
+                request -> useCase.apply()
+                        .flatMap(data -> {
+                                    HttpHeaders headers = new HttpHeaders();
+                                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                                    headers.setContentDispositionFormData("attachment", "minimum_parameter.xlsx");
+                                    return ServerResponse.ok()
+                                            .headers(h -> h.putAll(headers))
+                                            .bodyValue(data);
+                                }
                         )
+                        .switchIfEmpty(ServerResponse.notFound().build())
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 }

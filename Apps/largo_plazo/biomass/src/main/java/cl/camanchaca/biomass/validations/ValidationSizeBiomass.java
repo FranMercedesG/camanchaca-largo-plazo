@@ -11,15 +11,15 @@ public class ValidationSizeBiomass {
     public static Mono<SizeBiomassDTO> validateSizeBiomass(Mono<SizeBiomassDTO> sizeBiomassDTOMono) {
         return sizeBiomassDTOMono.map(data -> {
                     data.getData().stream()
-                            .forEach(size -> {
+                            .forEach(size ->
                                 Stream.of(
                                         size.getUnit(),
                                         size.getPieceType(),
                                         size.getInitialRange(),
                                         size.getFinalRange(),
                                         size.getSpecies()
-                                ).forEach(Objects::requireNonNull);
-                            });
+                                ).forEach(Objects::requireNonNull)
+                            );
                     return data;
                 })
                 .onErrorResume(throwable -> Mono.error(new InfrastructureError("03")));

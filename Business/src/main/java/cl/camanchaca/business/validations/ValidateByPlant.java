@@ -21,7 +21,7 @@ public class ValidateByPlant {
         return Flux.fromIterable(parameterSizePerformanceDTOs)
                 .flatMap(performanceDTO -> productPlantRepository.getByProducttIdAndPlantId(performanceDTO.getProductId(), performanceDTO.getPlantId())
                         .flatMap(parameterPlantDTO -> {
-                            if (!parameterPlantDTO.getStatus()) {
+                            if (Boolean.FALSE.equals(parameterPlantDTO.getStatus())) {
                                 log.error(parameterPlantDTO.toString());
                                 return Mono.error(new BusinessError("No se encuentra el sku relacionado con la planta"));
                             }
@@ -38,7 +38,7 @@ public class ValidateByPlant {
         return Flux.fromIterable(parameterCapacityDTOS)
                 .flatMap(dto -> productPlantRepository.getByProducttIdAndPlantId(dto.getProductId(), dto.getPlantId())
                         .flatMap(parameterPlantDTO -> {
-                            if (!parameterPlantDTO.getStatus()) {
+                            if (Boolean.FALSE.equals(parameterPlantDTO.getStatus())) {
                                 log.error(parameterPlantDTO.toString());
                                 return Mono.error(new BusinessError("No se encuentra el sku relacionado con la planta"));
                             }

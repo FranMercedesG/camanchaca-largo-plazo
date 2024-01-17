@@ -1,8 +1,8 @@
 package cl.camanchaca.business.usecases.largoplazo.orders.demand;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.generic.RequestParams;
-import cl.camanchaca.business.generic.Usecase;
 import cl.camanchaca.business.repositories.PeriodRepository;
 import cl.camanchaca.business.repositories.UnrestrictedDemandRepository;
 import cl.camanchaca.domain.models.Period;
@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class GetAllUnrestrictedDemandAdminUseCase {
     private final PeriodRepository periodRepository;
 
     public Mono<ParametersResponse> apply(RequestParams requestParams, Map<String, String> header) {
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periods -> {
                     if (periods.isEmpty()) {

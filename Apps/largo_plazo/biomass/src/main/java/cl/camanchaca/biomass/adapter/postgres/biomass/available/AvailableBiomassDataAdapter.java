@@ -57,7 +57,7 @@ public class AvailableBiomassDataAdapter implements AvailableBiomassRepository {
     public Mono<AvailableBiomass> saveAvailableBiomass(AvailableBiomass availableBiomass) {
         return availableBiomassDataRepository.existsById(availableBiomass.getHu())
                 .flatMap(exists ->
-                        exists
+                        Boolean.TRUE.equals(exists)
                                 ? availableBiomassDataRepository.save(AvailableBiomassMapper.toAvailableBiomassData(availableBiomass))
                                 : availableBiomassDataRepository.insertData(AvailableBiomassMapper.toAvailableBiomassData(availableBiomass)))
                 .then(Mono.defer(() -> Mono.just(availableBiomass)));

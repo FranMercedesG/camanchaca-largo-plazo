@@ -6,7 +6,6 @@ import cl.camanchaca.business.repositories.ParameterCapacityRepository;
 import cl.camanchaca.business.validations.ValidateByPlant;
 import cl.camanchaca.domain.dtos.ParameterCapacityDTO;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

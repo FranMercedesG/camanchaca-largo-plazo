@@ -12,9 +12,7 @@ import java.util.UUID;
 public interface GroupDataRepository extends ReactiveCrudRepository<GroupData, UUID> {
     Mono<GroupData> findByGroupIdAndGroupName(UUID groupId ,String groupName);
 
-    @Query("INSERT INTO groups " +
-            "(group_name) " +
-            "VALUES (:#{data.groupName}) " )
+    @Query("INSERT INTO groups (group_name) VALUES (:#{#data.groupName})")
     Mono<GroupData> insertGroup(@Param("data") GroupData groupData);
 
 }

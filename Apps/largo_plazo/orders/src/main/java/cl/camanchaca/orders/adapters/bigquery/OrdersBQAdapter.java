@@ -9,8 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-import java.util.Objects;
-
 @Service
 @AllArgsConstructor
 public class OrdersBQAdapter implements OrderBQRepository {
@@ -49,6 +47,7 @@ public class OrdersBQAdapter implements OrderBQRepository {
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 fluxSink.error(e);
+                Thread.currentThread().interrupt();
             }
         });
     }

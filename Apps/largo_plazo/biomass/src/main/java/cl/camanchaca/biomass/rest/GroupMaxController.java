@@ -1,6 +1,7 @@
 package cl.camanchaca.biomass.rest;
 
 import cl.camanchaca.biomass.validations.BiomassValidations;
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.responses.GroupSizeMaxResponse;
 import cl.camanchaca.business.usecases.largoplazo.biomass.GetGroupMaxBiomassBySpecieUseCase;
@@ -33,7 +34,7 @@ public class GroupMaxController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/biomass/group-max";
+    private static final String URL_BASE = "/biomass/group-max";
 
     @Bean
     public RouterFunction<ServerResponse> getGroups(GetGroupUseCase useCase) {
@@ -61,9 +62,9 @@ public class GroupMaxController {
                         .validateParams(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             BiomassValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .flatMap(s ->
@@ -85,7 +86,7 @@ public class GroupMaxController {
                                 .validateSaveGroupMax(
                                         request.bodyToMono(GroupSizeMaxResponse.class)
                                 )
-                                .flatMapMany(availableBiomasses -> useCase.apply(availableBiomasses))
+                                .flatMapMany(useCase)
                                 .collectList()
                                 .flatMap(result ->
                                         ServerResponse.ok()
@@ -118,9 +119,7 @@ public class GroupMaxController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest((Throwable) throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 

@@ -27,11 +27,11 @@ public class ProductBigqueryAdapter implements BigqueryCSTDRepository {
         QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(sqlQuery).build();
         bigQuery.query(queryConfig)
                 .getValues()
-                .forEach(fieldValues -> {
+                .forEach(fieldValues ->
                     total.set(fieldValues
                             .get(0)
-                            .getLongValue());
-                });
+                            .getLongValue())
+                );
         return Mono.just(total.get());
     }
 

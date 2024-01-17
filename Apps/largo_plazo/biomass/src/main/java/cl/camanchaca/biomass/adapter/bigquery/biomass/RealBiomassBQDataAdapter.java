@@ -50,6 +50,7 @@ public class RealBiomassBQDataAdapter implements RealBiomassBQRepository {
         try {
             return runFluxQuery(querySqlConfig);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
            return Flux.error(new BusinessError("Error con los datos de bigquery"));
         }
     }

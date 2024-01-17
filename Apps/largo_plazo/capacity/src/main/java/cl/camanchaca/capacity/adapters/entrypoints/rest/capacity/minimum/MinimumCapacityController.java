@@ -1,5 +1,6 @@
 package cl.camanchaca.capacity.adapters.entrypoints.rest.capacity.minimum;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.usecases.largoplazo.capacity.minimum.*;
 import cl.camanchaca.business.usecases.shared.ReadExcel;
@@ -28,7 +29,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class MinimumCapacityController {
 
     private final MainErrorhandler errorhandler;
-    private final String URL_BASE = "/capacity/minimum";
+    private static final String URL_BASE = "/capacity/minimum";
 
     @Bean
     public RouterFunction<ServerResponse> getAllMinimumCapacityDaily(GetAllMinimumProductiveCapacityUseCase useCase) {
@@ -39,9 +40,9 @@ public class MinimumCapacityController {
                         .validateParamsPagination(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             CapacityValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .flatMap(s ->
@@ -61,9 +62,9 @@ public class MinimumCapacityController {
                         .validateParamsPagination(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             CapacityValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .flatMap(s ->
@@ -84,9 +85,9 @@ public class MinimumCapacityController {
                         .collectList()
                         .flatMapMany(o -> {
                             CapacityValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .collectList()
@@ -110,9 +111,9 @@ public class MinimumCapacityController {
                         .collectList()
                         .flatMapMany(o -> {
                             CapacityValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .collectList()
@@ -135,9 +136,9 @@ public class MinimumCapacityController {
                         .validateParamsPagination(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             CapacityValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .flatMap(s ->
@@ -151,7 +152,7 @@ public class MinimumCapacityController {
     @Bean
     public RouterFunction<ServerResponse> bulkExcelMinimum(@Qualifier("getCapacityMinimumTotalBulkExcel") ReadExcel<MinimumCapacity> useCase) {
         return route(RequestPredicates
-                        .POST(URL_BASE+"/total")
+                        .POST(URL_BASE + "/total")
                         .and(RequestPredicates.accept(MediaType.MULTIPART_FORM_DATA)),
                 request -> request.body(BodyExtractors.toMultipartData())
                         .flatMapMany(parts -> parts.toSingleValueMap()
@@ -169,9 +170,7 @@ public class MinimumCapacityController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest((Throwable) throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 

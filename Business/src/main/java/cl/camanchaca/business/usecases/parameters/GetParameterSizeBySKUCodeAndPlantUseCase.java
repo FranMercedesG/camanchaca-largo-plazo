@@ -55,7 +55,7 @@ public class GetParameterSizeBySKUCodeAndPlantUseCase extends Usecase<Map<String
                 .filter(ParameterPlantDTO::getStatus)
                 .map(ParameterPlantDTO::getProductId)
                 .next()
-                .flatMap(integer -> productRepository.findById(integer))
+                .flatMap(productRepository::findById)
                 .flatMap(product ->
                         parameterSizeRepository.getByPlantIdAndProductId(plantId, productCode)
                                 .collectList()

@@ -45,5 +45,15 @@ public class Size {
                 .build();
     }
 
+    public String nameColumWithQualityAndSpecie() {
+        return new StringBuilder()
+                .append(this.nameColunm())
+                .append(" ")
+                .append(this.pieceType)
+                .append(" ")
+                .append(this.species)
+                .toString();
+    }
+
 }
 

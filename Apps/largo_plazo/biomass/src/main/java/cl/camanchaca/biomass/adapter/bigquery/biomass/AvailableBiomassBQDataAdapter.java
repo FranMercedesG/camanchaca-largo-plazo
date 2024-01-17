@@ -16,6 +16,8 @@ import java.time.LocalDate;
 public class AvailableBiomassBQDataAdapter implements AvailableBiomassBQRepository {
 
     private final BigQuery bigQuery;
+    private static final String PARSE_FECPRO_AND_PARAM_DATE = "WHERE DATE(PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%E*S', Fecpro)) =  @date ";
+    private static final String SELECT_BIOMASS = "SELECT * FROM `datalikecorp.OptimusRMP.BiomasaDisponibleSalmonesTome` ";
 
     @Override
     public Flux<AvailableBiomass> getAll() throws InterruptedException {
@@ -27,8 +29,8 @@ public class AvailableBiomassBQDataAdapter implements AvailableBiomassBQReposito
 
     @Override
     public Flux<AvailableBiomass> getByDateAndPage(LocalDate date, Integer size, Integer offset) throws InterruptedException {
-        String sqlQuery = "SELECT * FROM `datalikecorp.OptimusRMP.BiomasaDisponibleSalmonesTome` " +
-                "WHERE DATE(PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%E*S', Fecpro)) =  @date " +
+        String sqlQuery = SELECT_BIOMASS +
+                PARSE_FECPRO_AND_PARAM_DATE +
                 "LIMIT @size OFFSET @offset";
         QueryJobConfiguration querySqlConfig = QueryJobConfiguration.newBuilder(sqlQuery)
                 .addNamedParameter("date", QueryParameterValue.date(date.toString()))
@@ -40,8 +42,8 @@ public class AvailableBiomassBQDataAdapter implements AvailableBiomassBQReposito
 
     @Override
     public Flux<AvailableBiomass> getByDate(LocalDate date) throws InterruptedException {
-        String sqlQuery = "SELECT * FROM `datalikecorp.OptimusRMP.BiomasaDisponibleSalmonesTome` " +
-                "WHERE DATE(PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%E*S', Fecpro)) =  @date ";
+        String sqlQuery = SELECT_BIOMASS +
+                PARSE_FECPRO_AND_PARAM_DATE;
         QueryJobConfiguration querySqlConfig = QueryJobConfiguration.newBuilder(sqlQuery)
                 .addNamedParameter("date", QueryParameterValue.date(date.toString()))
                 .build();
@@ -50,7 +52,7 @@ public class AvailableBiomassBQDataAdapter implements AvailableBiomassBQReposito
 
     @Override
     public Flux<AvailableBiomass> getBetweenDateAndPage(LocalDate since, LocalDate until, Integer size, Integer offset) throws InterruptedException {
-        String sqlQuery = "SELECT * FROM `datalikecorp.OptimusRMP.BiomasaDisponibleSalmonesTome` " +
+        String sqlQuery = SELECT_BIOMASS +
                 "WHERE DATE(PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%E*S', Fecpro)) BETWEEN @since AND @until " +
                 "LIMIT @size OFFSET @offset";
         QueryJobConfiguration querySqlConfig = QueryJobConfiguration.newBuilder(sqlQuery)
@@ -74,7 +76,7 @@ public class AvailableBiomassBQDataAdapter implements AvailableBiomassBQReposito
     @Override
     public Mono<Long> countByDate(LocalDate date) throws InterruptedException {
         String sqlQuery = "SELECT COUNT(*) FROM `datalikecorp.OptimusRMP.BiomasaDisponibleSalmonesTome` " +
-                "WHERE DATE(PARSE_TIMESTAMP('%Y-%m-%d %H:%M:%E*S', Fecpro)) =  @date ";
+                PARSE_FECPRO_AND_PARAM_DATE;
         QueryJobConfiguration querySqlConfig = QueryJobConfiguration.newBuilder(sqlQuery)
                 .addNamedParameter("date", QueryParameterValue.date(date.toString()))
                 .build();

@@ -1,4 +1,4 @@
-package cl.camanchaca.biomass.adapter.postgres.weeklyPlanificationPeriod;
+package cl.camanchaca.biomass.adapter.postgres.weeklyplanificationperiod;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -17,4 +17,6 @@ public class GroupMapper {
                 .groupName(data.getName())
                 .build();
     }
+
+    private GroupMapper(){}
 }

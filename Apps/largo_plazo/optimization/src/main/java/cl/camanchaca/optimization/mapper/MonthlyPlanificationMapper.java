@@ -27,4 +27,5 @@ public class MonthlyPlanificationMapper {
                 .version(data.getVersion())
                 .build();
     }
+    private MonthlyPlanificationMapper(){}
 }

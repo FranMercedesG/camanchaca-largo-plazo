@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.capacity.maximum;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.BaseScenarioRepository;
@@ -11,6 +12,7 @@ import cl.camanchaca.domain.models.capacity.maximum.MaximumCapacityValue;
 import cl.camanchaca.domain.models.capacity.maximum.MaximumDailyProductiveCapacity;
 import cl.camanchaca.domain.models.capacity.maximum.MaximumCapacity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
@@ -22,8 +24,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
-
 public class GetAllTotalProductiveCapacityUseCase {
 
     private final MaximumCapacityRepository maximumRepository;
@@ -33,7 +35,7 @@ public class GetAllTotalProductiveCapacityUseCase {
     private final PeriodRepository periodRepository;
 
     public Mono<ParametersResponse> apply(RequestParams requestParams, Map<String, String> header) {
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(selectedPeriods -> {
                     if (selectedPeriods.isEmpty()) {
@@ -50,10 +52,10 @@ public class GetAllTotalProductiveCapacityUseCase {
                             .filter(o -> !o.isEmpty())
                             .flatMap(periods -> {
 
-                                System.out.println("periods: " + periods);
+                                log.info("periods: " + periods);
                                 return maximumRepository.getAllByPeriod(periods.stream().map(BasePeriodScenario::getPeriod).collect(Collectors.toList()))
                                         .filter(dpc -> {
-                                            System.out.println("maximum daily: " + dpc.toString());
+                                            log.info("maximum daily: " + dpc.toString());
                                             return dpc.getName() != null;
                                         })
                                         .groupBy(MaximumDailyProductiveCapacity::getName)
@@ -75,9 +77,11 @@ public class GetAllTotalProductiveCapacityUseCase {
                                                     .collect(Collectors.toList());
                                             maximumCapacity.setCapacity(capacities);
                                             return maximumCapacity;
-                                        })).collectList().map(maximumCapacities -> {
-                                            return ParametersResponse.of(maximumCapacities, Long.valueOf(maximumCapacities.size()));
-                                        });
+                                        }))
+                                        .collectList()
+                                        .map(maximumCapacities ->
+                                                ParametersResponse.of(maximumCapacities, Long.valueOf(maximumCapacities.size()))
+                                            );
                             });
                 });
     }

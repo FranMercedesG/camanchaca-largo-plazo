@@ -22,7 +22,7 @@ public class RealBiomassController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/biomass/real";
+    private static final String URL_BASE = "/biomass/real";
 
     @Bean
     public RouterFunction<ServerResponse> getRealBiomass(GetRealBiomassUseCase useCase) {
@@ -53,7 +53,7 @@ public class RealBiomassController {
                                         request.bodyToFlux(RealBiomass.class)
                                 )
                                 .collectList()
-                                .flatMapMany(availableBiomasses -> useCase.apply(availableBiomasses))
+                                .flatMapMany(useCase)
                                 .collectList()
                                 .flatMap(result ->
                                         ServerResponse.ok()

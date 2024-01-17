@@ -1,9 +1,12 @@
 package cl.camanchaca.orders.validations;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.domain.dtos.*;
 import cl.camanchaca.domain.models.demand.UnrestrictedDemand;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import cl.camanchaca.generics.errors.InfrastructureError;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -11,9 +14,10 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+@Slf4j
 public class DemandValidations {
 
-    public DemandValidations() {
+    private DemandValidations() {
     }
 
     public static Mono<RequestParams> validateGetAll(ServerRequest request, RequestParams params) {
@@ -21,14 +25,14 @@ public class DemandValidations {
                         .get())
                 .map(page -> {
                     int pageInt = Integer.parseInt(page);
-                    int pageSize = Integer.parseInt(request.queryParam("pageSize").get());
+                    int pageSize = Integer.parseInt(request.queryParam(Constans.PAGE_SIZE.getValue()).get());
 
-                    String specie = request.queryParam("specie").orElse(null);
+                    String specie = request.queryParam(Constans.SPECIE.getValue()).orElse(null);
                     String family = request.queryParam("family").orElse(null);
 
 
                     if (pageInt <= 0 || pageSize <= 0) {
-                        throw new RuntimeException("La pagina o el tamaño no puede ser menor a 0");
+                        throw new InfraestructureException(Constans.PAGE_ERROR.getValue());
                     }
 
                     return params.toBuilder()
@@ -46,12 +50,12 @@ public class DemandValidations {
                         .get())
                 .map(page -> {
                     int pageInt = Integer.parseInt(page);
-                    int pageSize = Integer.parseInt(request.queryParam("pageSize").get());
+                    int pageSize = Integer.parseInt(request.queryParam(Constans.PAGE_SIZE.getValue()).get());
 
-                    String specie = request.queryParam("specie").get();
+                    String specie = request.queryParam(Constans.SPECIE.getValue()).get();
                     
                     if (pageInt <= 0 || pageSize <= 0) {
-                        throw new RuntimeException("La pagina o el tamaño no puede ser menor a 0");
+                        throw new InfraestructureException(Constans.PAGE_ERROR.getValue());
                     }
 
                     if(specie == null){
@@ -72,9 +76,9 @@ public class DemandValidations {
                         .get())
                 .map(page -> {
                     int pageInt = Integer.parseInt(page);
-                    int pageSize = Integer.parseInt(request.queryParam("pageSize").get());
+                    int pageSize = Integer.parseInt(request.queryParam(Constans.PAGE_SIZE.getValue()).get());
                     if (pageInt <= 0 || pageSize <= 0) {
-                        throw new RuntimeException("La pagina o el tamaño no puede ser menor a 0");
+                        throw new InfraestructureException(Constans.PAGE_ERROR.getValue());
                     }
                     return params.toBuilder()
                             .page(pageInt)
@@ -145,17 +149,17 @@ public class DemandValidations {
                         sink.next(dto);
                     } catch (Exception e) {
                         // Agregar información de registro aquí
-                        System.out.println("Error de validación en validateRequestBody" + e);
+                        log.info("Error de validación en validateRequestBody" + e);
                         sink.error(e);
                     }
                 })
-                .onErrorResume(throwable -> Mono.error(new RuntimeException(throwable.getLocalizedMessage())));
+                .onErrorResume(throwable -> Mono.error(new InfraestructureException(throwable.getLocalizedMessage())));
     }
 
     public static void validateHeader(ServerRequest.Headers headers) {
         Stream.of(
-                headers.header("user").get(0),
-                headers.header("office").get(0)
+                headers.header(Constans.USER.getValue()).get(0),
+                headers.header(Constans.OFFICE.getValue()).get(0)
         ).forEach(Objects::requireNonNull);
 
     }

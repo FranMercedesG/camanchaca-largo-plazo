@@ -33,7 +33,7 @@ public class ProductDataAdapter implements ProductRepository {
     public Mono<Product> saveProduct(Product product) {
         return productDataRepository.existsById(product.getCodigo())
                 .flatMap(exists ->
-                        exists
+                        Boolean.TRUE.equals(exists)
                                 ? productDataRepository.save(ProductMapper.toProductData(product))
                                 : productDataRepository.insertProductData(ProductMapper.toProductData(product)))
                 .then(Mono.defer(() -> Mono.just(product)));

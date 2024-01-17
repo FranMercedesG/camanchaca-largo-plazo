@@ -1,7 +1,6 @@
 package cl.camanchaca.domain.models.product;
 
 import cl.camanchaca.domain.models.parameters.ParameterGroup;
-import cl.camanchaca.domain.models.parameters.ParameterSize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

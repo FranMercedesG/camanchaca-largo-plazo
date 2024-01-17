@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.capacity.maximum;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.repositories.BaseScenarioRepository;
 import cl.camanchaca.business.repositories.MaximumCapacityRepository;
 import cl.camanchaca.business.repositories.PeriodRepository;
@@ -28,7 +29,7 @@ public class SaveAllMaximumProductiveCapacityUseCase {
     private final PeriodRepository periodRepository;
 
     public Mono<Void> apply(List<MaximumCapacity> maximumCapacities, Map<String, String> header) {
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(selectedPeriods -> {
                     if (selectedPeriods.isEmpty()) {
@@ -41,62 +42,62 @@ public class SaveAllMaximumProductiveCapacityUseCase {
                                     currentPeriod.getFinalPeriod())
                             .map(BasePeriodScenario::getPeriod)
                             .collectList()
-                            .flatMap(periods -> {
-                                return maximumCapacityRepository.getAllByPeriod(periods)
-                                        .collectList()
-                                        .flatMap(maxCapacities -> {
-                                            return maximumCapacityRepository.deleteAllPeriodDailyProductiveCapacityByUUID(
-                                                    maxCapacities.stream()
-                                                            .map(MaximumDailyProductiveCapacity::getPeriodDailyProductiveCapacityId)
-                                                            .collect(Collectors.toList())
-                                            ).then(maximumCapacityRepository.deleteAllProductiveCapacityByUUID(
-                                                    maxCapacities.stream()
-                                                            .map(MaximumDailyProductiveCapacity::getProductiveCapacityId)
-                                                            .collect(Collectors.toList())
-                                            )).then(Mono.just(maxCapacities));
-                                        });
-                            })
+                            .flatMap(periods ->
+                                    maximumCapacityRepository.getAllByPeriod(periods)
+                                            .collectList()
+                                            .flatMap(maxCapacities ->
+                                                    maximumCapacityRepository.deleteAllPeriodDailyProductiveCapacityByUUID(
+                                                            maxCapacities.stream()
+                                                                    .map(MaximumDailyProductiveCapacity::getPeriodDailyProductiveCapacityId)
+                                                                    .collect(Collectors.toList())
+                                                    ).then(maximumCapacityRepository.deleteAllProductiveCapacityByUUID(
+                                                            maxCapacities.stream()
+                                                                    .map(MaximumDailyProductiveCapacity::getProductiveCapacityId)
+                                                                    .collect(Collectors.toList())
+                                                    )).then(Mono.just(maxCapacities))
+                                            )
+                            )
                             .thenMany(Flux.fromIterable(maximumCapacities))
-                            .flatMap(maximumCapacity -> {
-                                //si no existe un productive capacity, se crea...
-                                return maximumCapacityRepository.getAllProductiveCapacity()
-                                        .collectList()
-                                        .flatMap(productiveCapacities -> {
-                                            boolean nameExists = productiveCapacities.stream()
-                                                    .anyMatch(pc -> pc.getName().equals(maximumCapacity.getName()));
-                                            if (nameExists) {
+                            .flatMap(maximumCapacity ->
+                                    //si no existe un productive capacity, se crea...
+                                    maximumCapacityRepository.getAllProductiveCapacity()
+                                            .collectList()
+                                            .flatMap(productiveCapacities -> {
+                                                boolean nameExists = productiveCapacities.stream()
+                                                        .anyMatch(pc -> pc.getName().equals(maximumCapacity.getName()));
+                                                if (Boolean.TRUE.equals(nameExists)) {
 
-                                               ProductiveCapacity nameProductive = productiveCapacities.stream()
-                                                        .filter(pc -> pc.getName().equals(maximumCapacity.getName())).findFirst().get();
-                                                return Mono.just(CapacityObjDTO
-                                                        .builder()
-                                                        .name(maximumCapacity.getName())
-                                                        .uuid(nameProductive.getId())
-                                                        .build());
+                                                    ProductiveCapacity nameProductive = productiveCapacities.stream()
+                                                            .filter(pc -> pc.getName().equals(maximumCapacity.getName())).findFirst().get();
+                                                    return Mono.just(CapacityObjDTO
+                                                            .builder()
+                                                            .name(maximumCapacity.getName())
+                                                            .uuid(nameProductive.getId())
+                                                            .build());
 
-                                            } else {
-                                                return maximumCapacityRepository.saveProductiveCapacity(maximumCapacity.getName())
-                                                        .flatMap(uuid -> Mono.just(CapacityObjDTO.builder()
-                                                                .name(maximumCapacity.getName())
-                                                                .uuid(uuid)
-                                                                .build()));
-                                            }
-                                        });
-                            })
+                                                } else {
+                                                    return maximumCapacityRepository.saveProductiveCapacity(maximumCapacity.getName())
+                                                            .flatMap(uuid -> Mono.just(CapacityObjDTO.builder()
+                                                                    .name(maximumCapacity.getName())
+                                                                    .uuid(uuid)
+                                                                    .build()));
+                                                }
+                                            })
+                            )
                             .distinct()
                             .flatMap(uuid ->
                                     Flux.fromIterable(maximumCapacities).filter(o -> o.getName().equalsIgnoreCase(uuid.getName()))
-                                    .flatMap(maximumCapacity -> {
-                                return maximumCapacityRepository.saveAllPeriodDailyProductiveCapacity(
-                                        maximumCapacity.getCapacity().stream()
-                                                .map(m -> MaximumPeriodDailyProductiveCapacity.builder()
-                                                        .period(m.getDate())
-                                                        .maximum(m.getValue())
-                                                        .productiveCapacityId(uuid.getUuid())
-                                                        .build())
-                                                .collect(Collectors.toList())
-                                );
-                            }))
+                                            .flatMap(maximumCapacity ->
+                                                    maximumCapacityRepository.saveAllPeriodDailyProductiveCapacity(
+                                                            maximumCapacity.getCapacity().stream()
+                                                                    .map(m -> MaximumPeriodDailyProductiveCapacity.builder()
+                                                                            .period(m.getDate())
+                                                                            .maximum(m.getValue())
+                                                                            .productiveCapacityId(uuid.getUuid())
+                                                                            .build())
+                                                                    .collect(Collectors.toList())
+                                                    )
+                                            ))
                             .then();
                 });
     }

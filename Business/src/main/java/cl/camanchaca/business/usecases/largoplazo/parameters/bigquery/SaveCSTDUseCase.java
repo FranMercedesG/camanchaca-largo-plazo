@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.parameters.bigquery;
 
+import cl.camanchaca.business.generic.BusinessException;
 import cl.camanchaca.business.repositories.BigqueryCSTDRepository;
 import cl.camanchaca.business.repositories.ProductRepository;
 import cl.camanchaca.domain.models.Product;
@@ -16,10 +17,11 @@ public class SaveCSTDUseCase {
         try {
             return bigqueryCSTDRepository
                     .getAll()
-                    .flatMap(product -> productRepository.saveProduct(product));
+                    .flatMap(productRepository::saveProduct);
 
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            throw new BusinessException(e.getLocalizedMessage());
         }
     }
 

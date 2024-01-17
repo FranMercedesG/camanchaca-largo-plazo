@@ -15,4 +15,6 @@ public class LocalDateUtils {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     return LocalDateTime.parse(date, formatter);
   }
+
+  private LocalDateUtils(){}
 }

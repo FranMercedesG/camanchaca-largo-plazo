@@ -9,7 +9,6 @@ import cl.camanchaca.capacity.adapters.postgres.minimum.minimumcapacity.MinimumD
 import cl.camanchaca.capacity.adapters.postgres.minimum.period.MinimumPeriodProductiveCapacityDataRepository;
 import cl.camanchaca.capacity.mappers.MinimumProductiveMapper;
 import cl.camanchaca.domain.models.Minimum;
-import cl.camanchaca.domain.models.capacity.minimum.MinimumCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumDailyProductiveCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumPeriodDailyProductiveCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumTotalProductiveCapacity;

@@ -1,5 +1,6 @@
 package cl.camanchaca.orders.entrypoints.rest.demand;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.usecases.largoplazo.orders.demand.DownloadDemandUnrestrictedAdminUseCase;
 import cl.camanchaca.business.usecases.largoplazo.orders.demand.GetAllUnrestrictedDemandAdminUseCase;
@@ -31,7 +32,7 @@ public class UnrestrictedDemandAdminController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/demand/admin";
+    private static final String URL_BASE = "/demand/admin";
     @Bean
     public RouterFunction<ServerResponse> getAllAdmin(GetAllUnrestrictedDemandAdminUseCase useCase) {
         return route(
@@ -41,9 +42,9 @@ public class UnrestrictedDemandAdminController {
                         .validateGetAll(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             DemandValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .flatMap(s ->
@@ -62,9 +63,9 @@ public class UnrestrictedDemandAdminController {
                         .validateParamsPagination(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             DemandValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo)
                                     .flatMap(excelBytes -> {
                                         HttpHeaders headers = new HttpHeaders();
@@ -103,9 +104,7 @@ public class UnrestrictedDemandAdminController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest((Throwable) throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 

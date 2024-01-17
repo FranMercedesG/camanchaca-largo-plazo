@@ -19,4 +19,6 @@ public class PeriodDailyProductiveCapacityMapper {
                 .productiveCapacityId(data.getProductiveCapacityId())
                 .build();
     }
+
+    private PeriodDailyProductiveCapacityMapper(){}
 }

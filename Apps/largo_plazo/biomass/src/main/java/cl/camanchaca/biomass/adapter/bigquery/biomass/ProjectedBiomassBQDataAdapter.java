@@ -6,6 +6,7 @@ import cl.camanchaca.domain.models.biomass.ProjectedBiomassScenario;
 import cl.camanchaca.domain.models.biomass.ProyectadaMerkatus;
 import com.google.cloud.bigquery.*;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -14,6 +15,7 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ProjectedBiomassBQDataAdapter implements ProjectedBiomasBQRepository {
@@ -47,20 +49,20 @@ public class ProjectedBiomassBQDataAdapter implements ProjectedBiomasBQRepositor
             currentDate = currentDate.plusMonths(1);
         }
 
-        StringBuilder whereClause = new StringBuilder("WHERE\n");
+        StringBuilder whereClause = new StringBuilder("WHERE ");
         for (Map.Entry<Integer, List<String>> entry : yearToMonthsMap.entrySet()) {
-            whereClause.append(String.format("  (Year = '%d' AND Month IN (%s))\n  OR\n",
+            whereClause.append(String.format("  (Year = '%d' AND Month IN (%s))   OR ",
                     entry.getKey(),
                     entry.getValue().stream().map(month -> "'" + month + "'").collect(Collectors.joining(", "))));
         }
 
         whereClause.setLength(whereClause.length() - 6);
 
-        String sqlQuery = String.format("SELECT *\n" +
-                "FROM `datalikecorp.OptimusRMP.BiomasaProyectadaMerkatus`\n" +
+        String sqlQuery = String.format("SELECT * " +
+                "FROM `datalikecorp.OptimusRMP.BiomasaProyectadaMerkatus` " +
                 "%s", whereClause.toString());
 
-        System.out.println(sqlQuery);
+        log.info(sqlQuery);
 
         QueryJobConfiguration querySqlConfig = QueryJobConfiguration.newBuilder(sqlQuery).build();
 

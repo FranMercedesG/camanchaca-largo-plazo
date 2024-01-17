@@ -2,7 +2,6 @@ package cl.camanchaca.business.repositories;
 
 import cl.camanchaca.domain.dtos.ParameterSizePerformanceDTO;
 import cl.camanchaca.domain.models.parameters.ParameterPerformance;
-import cl.camanchaca.domain.models.parameters.ParameterSize;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

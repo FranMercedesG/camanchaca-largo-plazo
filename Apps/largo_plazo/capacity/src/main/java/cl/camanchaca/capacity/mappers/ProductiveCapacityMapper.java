@@ -57,4 +57,6 @@ public class ProductiveCapacityMapper {
                 .build();
     }
 
+    private ProductiveCapacityMapper(){}
+
 }

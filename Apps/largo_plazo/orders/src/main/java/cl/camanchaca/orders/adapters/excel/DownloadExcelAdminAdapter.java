@@ -2,6 +2,7 @@ package cl.camanchaca.orders.adapters.excel;
 
 import cl.camanchaca.business.repositories.DownloadAdminRepository;
 import cl.camanchaca.domain.models.demand.UnrestrictedDemand;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -100,7 +101,7 @@ public class DownloadExcelAdminAdapter implements DownloadAdminRepository {
                     return Mono.just(bos.toByteArray());
                 }
             } catch (IOException e) {
-                return Mono.error(new RuntimeException("Error al generar el archivo Excel", e));
+                return Mono.error(new InfraestructureException("Error al generar el archivo Excel"));
             }
         });
     }

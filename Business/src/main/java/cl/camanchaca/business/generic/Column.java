@@ -1,7 +1,6 @@
 package cl.camanchaca.business.generic;
 
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

@@ -1,6 +1,5 @@
 package cl.camanchaca.orders.mappers;
 
-import cl.camanchaca.domain.models.biomass.ProyectadaMerkatus;
 import cl.camanchaca.domain.models.demand.Freight;
 import com.google.cloud.bigquery.FieldValue;
 import com.google.cloud.bigquery.FieldValueList;
@@ -25,4 +24,5 @@ public class BigQueryMapper {
                 : value.getStringValue();
     }
 
+    private BigQueryMapper(){}
 }

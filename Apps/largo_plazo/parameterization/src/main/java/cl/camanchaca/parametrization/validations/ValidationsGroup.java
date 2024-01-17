@@ -28,9 +28,7 @@ public class ValidationsGroup {
             dto.getData().stream()
                     .filter(Objects::nonNull)
                     .forEach(o -> {
-                        if (o.getGroupId() == null) {
-                            throw new IllegalArgumentException("id no puede ser nulo.");
-                        }
+
                         if (o.getStatus() == null) {
                             throw new IllegalArgumentException("status no puede ser nulo.");
                         }

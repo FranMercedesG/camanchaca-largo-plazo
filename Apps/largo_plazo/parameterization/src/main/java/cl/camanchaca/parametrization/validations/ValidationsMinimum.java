@@ -1,6 +1,5 @@
 package cl.camanchaca.parametrization.validations;
 
-import cl.camanchaca.domain.dtos.ParameterCapacityDTO;
 import cl.camanchaca.domain.dtos.ParameterMinimumDTO;
 import cl.camanchaca.generics.errors.InfrastructureError;
 import reactor.core.publisher.Flux;

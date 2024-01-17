@@ -1,6 +1,5 @@
 package cl.camanchaca.domain.dtos;
 
-import cl.camanchaca.domain.models.demand.FobDetail;
 import cl.camanchaca.domain.models.demand.RmpDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

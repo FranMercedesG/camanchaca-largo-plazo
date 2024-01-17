@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -31,7 +32,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class PerformanceController {
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/parameters/performance";
+    private static final String URL_BASE = "/parameters/performance";
 
     @Bean
     public RouterFunction<ServerResponse> getSizePerformance(GetParameterPerformanceUseCase useCase) {
@@ -87,9 +88,7 @@ public class PerformanceController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest(throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 
@@ -109,6 +108,25 @@ public class PerformanceController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
+                        .onErrorResume(errorhandler::badRequest)
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> downloadPerformance(DownloadParameterPerformanceUseCase useCase) {
+        return RouterFunctions.route(
+                RequestPredicates.GET(URL_BASE + "/excel/download"),
+                request -> useCase.apply()
+                        .flatMap(data -> {
+                                    HttpHeaders headers = new HttpHeaders();
+                                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                                    headers.setContentDispositionFormData("attachment", "size_performance_parameter.xlsx");
+                                    return ServerResponse.ok()
+                                            .headers(h -> h.putAll(headers))
+                                            .bodyValue(data);
+                                }
+                        )
+                        .switchIfEmpty(ServerResponse.notFound().build())
                         .onErrorResume(errorhandler::badRequest)
         );
     }

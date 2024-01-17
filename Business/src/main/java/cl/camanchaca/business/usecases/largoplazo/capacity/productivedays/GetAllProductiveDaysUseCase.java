@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.capacity.productivedays;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.BaseScenarioRepository;
@@ -21,7 +22,7 @@ public class GetAllProductiveDaysUseCase {
 
     public Mono<ParametersResponse> apply(RequestParams requestParams, Map<String, String> header) {
 
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periods -> {
                     if (periods.isEmpty()) {
@@ -32,9 +33,7 @@ public class GetAllProductiveDaysUseCase {
 
                     return baseScenarioRepository.getAllBetweenDates(
                              period.getInitialPeriod(), period.getFinalPeriod()
-                    ).collectList().flatMap(baseScenario -> {
-                        return Mono.just(ParametersResponse.of(baseScenario, Long.valueOf(baseScenario.size())));
-                    });
+                    ).collectList().flatMap(baseScenario -> Mono.just(ParametersResponse.of(baseScenario, Long.valueOf(baseScenario.size()))));
                 });
 
 

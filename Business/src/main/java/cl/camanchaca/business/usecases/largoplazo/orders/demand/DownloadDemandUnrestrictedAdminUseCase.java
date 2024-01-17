@@ -1,6 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.orders.demand;
 
-import cl.camanchaca.business.generic.ParametersResponse;
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.DownloadAdminRepository;
 import cl.camanchaca.business.repositories.PeriodRepository;
@@ -29,7 +29,7 @@ public class DownloadDemandUnrestrictedAdminUseCase {
     }
 
     private Flux<UnrestrictedDemand> getData(RequestParams requestParams, Map<String, String> header) {
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMapMany(periods -> {
                     if (periods.isEmpty()) {

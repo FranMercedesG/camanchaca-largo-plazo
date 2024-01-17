@@ -25,8 +25,7 @@ public class GetRealBiomassBQUseCase implements Supplier<Flux<RealBiomass>> {
                     .flatMapMany(planificationPeriod ->
                             realBiomassBQRepository.getByDate(planificationPeriod.getPlanificationDate())
                     )
-                    .flatMap(realBiomass ->
-                            realBiomassRepository.save(realBiomass), 3);
+                    .flatMap(realBiomassRepository::save, 3);
 
     }
 }

@@ -1,6 +1,5 @@
 package cl.camanchaca.business.responses;
 
-import cl.camanchaca.domain.models.biomass.AvailableBiomass;
 import cl.camanchaca.domain.models.biomass.GroupSizeMax;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

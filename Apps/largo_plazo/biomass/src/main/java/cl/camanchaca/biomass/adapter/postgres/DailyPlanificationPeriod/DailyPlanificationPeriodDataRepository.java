@@ -1,4 +1,4 @@
-package cl.camanchaca.biomass.adapter.postgres.DailyPlanificationPeriod;
+package cl.camanchaca.biomass.adapter.postgres.dailyplanificationperiod;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;

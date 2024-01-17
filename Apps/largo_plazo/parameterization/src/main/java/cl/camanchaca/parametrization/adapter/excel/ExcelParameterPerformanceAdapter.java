@@ -5,6 +5,7 @@ import cl.camanchaca.business.repositories.ExcelRepository;
 import cl.camanchaca.domain.models.parameters.ParameterPerformance;
 import cl.camanchaca.domain.models.product.ProductPerformance;
 import cl.camanchaca.parametrization.adapter.postgresql.product.ProductDataRepository;
+import cl.camanchaca.parametrization.adapter.postgresql.size.SizeData;
 import cl.camanchaca.parametrization.adapter.postgresql.size.SizeDataRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class ExcelParameterPerformanceAdapter implements ExcelRepository<Product
     @Override
     public Flux<ProductPerformance> readFile(InputStream file) {
         return sizeDataRepository.findAll()
-                .map(productSizeData -> productSizeData.getSizeId())
+                .map(SizeData::getSizeId)
                 .collectList()
                 .flatMapMany(uuids -> {
                     DataFormatter dataFormatter = new DataFormatter();

@@ -1,7 +1,6 @@
 package cl.camanchaca.business.repositories;
 
 import cl.camanchaca.domain.models.Minimum;
-import cl.camanchaca.domain.models.capacity.maximum.MaximumPeriodDailyProductiveCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumDailyProductiveCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumPeriodDailyProductiveCapacity;
 import reactor.core.publisher.Flux;

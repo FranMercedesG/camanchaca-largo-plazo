@@ -48,6 +48,7 @@ public class OrderBQMapper {
                 .umDocumento(rowToString(row.get("UMDocumento")))
                 .cierrePedidoUmb(rowToNulleableBigdecimal(row.get("CierrePedidoUMB")))
                 .rendimiento(rowToNulleableBigdecimal(row.get("Rendimiento")))
+                .oficina(rowToString(row.get("Oficina")))
                 .build();
     }
 

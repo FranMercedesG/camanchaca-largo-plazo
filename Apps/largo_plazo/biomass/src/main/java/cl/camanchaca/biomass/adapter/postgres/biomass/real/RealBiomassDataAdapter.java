@@ -34,7 +34,7 @@ public class RealBiomassDataAdapter implements RealBiomassRepository {
     public Mono<RealBiomass> save(RealBiomass realBiomass) {
 
         return realBiomassDataRepository.existsById(realBiomass.getHu())
-                .flatMap(exist -> exist ? realBiomassDataRepository.save(
+                .flatMap(exist -> Boolean.TRUE.equals(exist) ? realBiomassDataRepository.save(
                         RealBiomassMapper.toRealBiomassData(realBiomass)
                 )
                         : realBiomassDataRepository.insertData(

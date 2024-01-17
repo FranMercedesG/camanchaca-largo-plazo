@@ -17,4 +17,6 @@ public class MinimumMapper {
                 .name(data.getName())
                 .build();
     }
+
+    private MinimumMapper(){}
 }

@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.optimization;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.repositories.PeriodRepository;
 import cl.camanchaca.domain.models.Period;
@@ -8,7 +9,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.TextStyle;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -17,7 +17,7 @@ public class GetSelectedPeriodUseCase {
     private final PeriodRepository periodRepository;
     public Mono<ParametersResponse>  apply(Map<String, String> header) {
 
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periods -> {
                     if (periods.isEmpty()) {

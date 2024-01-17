@@ -4,11 +4,8 @@ import cl.camanchaca.business.generic.*;
 import cl.camanchaca.business.repositories.ParameterCapacityRepository;
 import cl.camanchaca.business.repositories.ProductRepository;
 import cl.camanchaca.business.repositories.ProductiveCapacityRepository;
-import cl.camanchaca.domain.dtos.ParameterCapacityDTO;
 import cl.camanchaca.domain.models.parameters.ParameterCapacity;
-import cl.camanchaca.domain.models.parameters.ParameterSize;
 import cl.camanchaca.domain.models.product.ProductCapacity;
-import cl.camanchaca.domain.models.product.ProductSize;
 import lombok.AllArgsConstructor;
 import reactor.core.publisher.Mono;
 

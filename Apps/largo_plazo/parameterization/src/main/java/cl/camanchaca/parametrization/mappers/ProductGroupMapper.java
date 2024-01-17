@@ -29,4 +29,5 @@ public class ProductGroupMapper {
                 .groupName(parameterGroupDTO.getGroupName())
                 .build();
     }
+    private ProductGroupMapper(){}
 }

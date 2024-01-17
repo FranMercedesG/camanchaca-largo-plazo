@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.biomass;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.PeriodRepository;
@@ -19,7 +20,7 @@ public class GetAllProjectBiomassScenarioUseCase {
 
     private final ProjectedBiomasBQRepository biomasBQRepository;
     public Mono<ParametersResponse> apply(RequestParams requestParams, Map<String, String> headerInfo) {
-        return periodRepository.getSelectedPeriodByUser(headerInfo.get("user"))
+        return periodRepository.getSelectedPeriodByUser(headerInfo.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periods -> {
                     if (periods.isEmpty()) {
@@ -39,6 +40,8 @@ public class GetAllProjectBiomassScenarioUseCase {
                                 .collectList()
                                 .map(unrestrictedDemandList -> ParametersResponse.of(unrestrictedDemandList, (long) unrestrictedDemandList.size()));
                     } catch (InterruptedException e) {
+                        log.error("Error in GetAllProjectBiomassScenarioUseCase", e);
+                        Thread.currentThread().interrupt();
                         return Mono.error(new RuntimeException(e));
                     }
                 });

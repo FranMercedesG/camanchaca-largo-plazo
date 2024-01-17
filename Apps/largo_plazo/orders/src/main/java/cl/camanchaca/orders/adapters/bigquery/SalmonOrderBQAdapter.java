@@ -20,7 +20,7 @@ public class SalmonOrderBQAdapter implements SalmonOrdersBQRepository {
     public Flux<Order> getOrdersBetweenDate(LocalDate initialDate, LocalDate finalDate) {
         String sqlQuery = "SELECT * FROM `datalikecorp.OptimusRMP.PedidosSalmonesRMP` " +
                 "WHERE  FechaPreferenteEntrega BETWEEN ? AND ? " +
-                "AND NombreSector NOT LIKE '%Congelado%'";
+                "AND NombreSector LIKE '%Congelado%'";
         QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(sqlQuery)
                 .addPositionalParameter(QueryParameterValue.date(initialDate.toString()))
                 .addPositionalParameter(QueryParameterValue.date(finalDate.toString()))
@@ -41,6 +41,7 @@ public class SalmonOrderBQAdapter implements SalmonOrdersBQRepository {
                 fluxSink.complete();
             } catch (InterruptedException e) {
                 fluxSink.error(e);
+                Thread.currentThread().interrupt();
             }
         });
     }

@@ -1,4 +1,4 @@
-package cl.camanchaca.biomass.adapter.postgres.weeklyPlanificationPeriod;
+package cl.camanchaca.biomass.adapter.postgres.weeklyplanificationperiod;
 
 import cl.camanchaca.business.repositories.WeeklyPlanificationRepository;
 import cl.camanchaca.domain.models.PlanificationPeriod;

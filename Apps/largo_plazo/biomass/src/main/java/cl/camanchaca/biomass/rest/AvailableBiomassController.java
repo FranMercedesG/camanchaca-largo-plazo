@@ -24,7 +24,7 @@ public class AvailableBiomassController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/biomass/available";
+    private static final String URL_BASE = "/biomass/available";
 
     @Bean
     public RouterFunction<ServerResponse> getADailyAvailableBiomass(GetDailyAvailableBiomassUseCase useCase) {
@@ -89,7 +89,7 @@ public class AvailableBiomassController {
                                 .validateAvailableBiomass(
                                         request.bodyToMono(AvailableBiomassDTO.class)
                                 )
-                                .flatMapMany(availableBiomasses -> useCase.apply(availableBiomasses))
+                                .flatMapMany(useCase)
                                 .collectList()
                                 .flatMap(result ->
                                         ServerResponse.ok()

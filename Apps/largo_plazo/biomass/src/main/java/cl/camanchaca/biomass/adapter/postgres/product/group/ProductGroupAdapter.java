@@ -22,6 +22,11 @@ public class ProductGroupAdapter implements ParameterGroupRepository {
     }
 
     @Override
+    public Flux<ParameterGroupDTO> getAll() {
+        return null;
+    }
+
+    @Override
     public Flux<ParameterGroupDTO> getByProductIdAndGroupId(Integer productId, UUID groudId) {
         return productGroupDataRepository.findByProductIdAndGroupId(productId,groudId)
                 .map(ProductGroupMapper::toParameterGroupDTOp);

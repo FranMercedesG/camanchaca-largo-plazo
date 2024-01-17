@@ -1,7 +1,6 @@
 package cl.camanchaca.business.repositories;
 
 import cl.camanchaca.domain.dtos.ParameterPlantDTO;
-import cl.camanchaca.domain.models.product.ProductPlant;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

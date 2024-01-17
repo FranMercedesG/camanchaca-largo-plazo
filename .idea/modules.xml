@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Business/camanchaca.camanchaca-largo-plazo-Business.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Business/camanchaca.camanchaca-largo-plazo-Business.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Domain/camanchaca.camanchaca-largo-plazo-Domain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Domain/camanchaca.camanchaca-largo-plazo-Domain.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Apps/largo_plazo/transversal/camanchaca.largo_plazo-transversal.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Apps/largo_plazo/transversal/camanchaca.largo_plazo-transversal.main.iml" />
+    </modules>
+  </component>
+</project>

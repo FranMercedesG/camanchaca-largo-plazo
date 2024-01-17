@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.capacity.minimum;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.BaseScenarioRepository;
@@ -7,19 +8,18 @@ import cl.camanchaca.business.repositories.PeriodRepository;
 import cl.camanchaca.business.repositories.TotalMinimumRepository;
 import cl.camanchaca.domain.models.Period;
 import cl.camanchaca.domain.models.capacity.BasePeriodScenario;
-import cl.camanchaca.domain.models.capacity.maximum.MaximumCapacity;
-import cl.camanchaca.domain.models.capacity.maximum.MaximumCapacityValue;
-import cl.camanchaca.domain.models.capacity.minimum.*;
+import cl.camanchaca.domain.models.capacity.minimum.MinimumCapacity;
+import cl.camanchaca.domain.models.capacity.minimum.MinimumCapacityValue;
+import cl.camanchaca.domain.models.capacity.minimum.MinimumTotalProductiveCapacity;
 import lombok.RequiredArgsConstructor;
-import reactor.core.publisher.Flux;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuples;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 public class GetAllTotalMinimumSavedUseCase {
     private final TotalMinimumRepository totalMinimumRepository;
@@ -28,7 +28,7 @@ public class GetAllTotalMinimumSavedUseCase {
 
     public Mono<ParametersResponse>apply(RequestParams requestParams, Map<String, String> header) {
 
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periodsSelected -> {
                     if (periodsSelected.isEmpty()) {
@@ -43,7 +43,7 @@ public class GetAllTotalMinimumSavedUseCase {
                             .collectList()
                             .filter(o -> !o.isEmpty())
                             .flatMap(periods -> totalMinimumRepository.getAllTotalProductiveByPeriod(periods.stream().map(BasePeriodScenario::getPeriod).collect(Collectors.toList()))
-                                    .doOnNext(System.out::println)
+                                    .doOnNext(minimumTotalProductiveCapacity -> log.info(minimumTotalProductiveCapacity.toString()))
                                     .groupBy(MinimumTotalProductiveCapacity::getName)
                                     .flatMap(groupedFlux -> groupedFlux.collectList().map(totalProductive -> {
                                         MinimumCapacity maximumCapacity = new MinimumCapacity();

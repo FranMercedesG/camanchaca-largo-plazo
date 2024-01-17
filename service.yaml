@@ -11,3 +11,41 @@ spec:
         env:
         - name: NODE_ENV
           value: $NODE_ENV
+        - name: CLIENT_ID
+          value: "106629867547536498653"
+        - name: DATABASE_NAME
+          value: "planificacion_largo_plazo"
+        - name: DATABASE_PASSWORD
+          value: "Soporte!123!."
+        - name: DATABASE_USERNAME
+          value: "postgres"
+        - name: HOST_DB
+          value: "34.123.187.194"
+        - name: PORT_DB
+          value: "5432"
+        - name: PRIVATE_KEY
+          value: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC2Zko1TtiOL7iD\nz4LoLtgGDmELYxRw+41z7p9fFFtZkGTZZtojDASNwzxGWEzhPHoxDOaXBW7c4D40\nMoRuDwCUuaSajIbd1JN+icAW+t/y4Rwhd+DDA7szmJbVaf+MMf2WfFjBi05SAmWc\nQo5mW3nhlI0OcXeVUGb3ZBzjvXj00bGEnVRKwRMnHMjRz5+IAkE/frR+OLAdajNc\nLf6nrGt7LsppXRKMtQMncg+rZhukjDCZKCEEfYidgFNL1GfXQ8aYr9wbx2G0GeMp\nT9j2UotPPwdkAcXurvn/V5bMTPaJAJ0TOC4CRiwx1MWIvYNHPid+Us1MAsGGznx5\nZDU5M2a9AgMBAAECggEAEvEC7k/Cjdt3TBrh04Y/0TsviTzwC76XxS0H2FoXFXE5\nA9maOA8Arw8SBJUZYL+EyfC2xoKeLWpNE2MWnQ5KR2eS6CjFPaacbYTVEZ3aYVDO\nuMwH54CM8XH8Yeu4ycCMPtMpbWnvx3Tvw98mhgskWFByqIgQfM1FcBXxqRXNSJEM\nOhfZph21s0ij2RdGsgnJOpJ6YeThgCum31R2pHKgyBE3t61ChEIdg5kL5Fb6GvbP\ny3V7qBct4FPseXentWFQVUallnFZe6HhhbSdLgL/qWyZgp+1s7Pq+/ViLDITwZgU\n0rXhWezo6sOJkwOa8AZNzPi0ngGilYpwt6BAfjNVUQKBgQDeOXpBQPmjMtG3SS5h\nalssehLIX1NzW8FboFjoITd4WrhOwIeGmp13WWE302RxCzfWdwaASdnufQ16idj6\no9SKmXGHVdVNlCzRGKdPG4SON4SPdWWoiXoYWt+wLLgsM/jbbUBxZkCSdFQH2QsK\neKNDkZ9cBrdhajWM9YT2MTtpbQKBgQDSH0PsFFhIIR4pC0DomsL9sxX0U1vcaZi0\nQ2KWlI1o6WAU9H0bHjgXhM7M8IvF2nkLoSgyX18wyPQjRKvkU7xbPhcE2MsQovbC\nlK7JdRYXLog+xGzqC14QJiITpVYbOgm+ZwU1yO8fOIjhoDFjOG0s8btUNHYmZNYp\n3QCnSwFwkQKBgCtFM9nq5fDyH0W6GS7cv74MUwXzEdO/hQnrUgR5G0zzFTo4YOtD\nxe+MVtLA9ajRT2ESMhDe0HGQpgQ7PSWoquUF9cYtX2hItuVMEJ/lssziYIxyhoXn\npv+BCldKjd4FjKplPowWJfKedhJFH9I9JUUt4MLRh/mO7bhxwh8R/QiNAoGBAMxF\nWOLJZIm6qHd+WTvIOIgq8cz0vPkqLyoP2GhLQq4bMy0sAfO7DQzQL7tMnpVaLxL/\nOPS/gusKcU1YFUODpDmPwxETMVabFwlTQhjXmwIuWoWqr7dYFbndWIOA2JTfd1mD\nDa2cCdtwOqId+eVblcd7uYHC/pmUrh9Emr4ITP4BAoGBAKzD9wnvILNjejbHVSf8\n20mT51RNv5c41Sbt8Z0gzxeoJJeTwS9yH61rxZp1GjYxn0adrtGcJYy6HoMZcP5r\ntUFUuNNzuWV3I7imYB3GX5YBZzbF7J+ODiEJkoOEBnfeKivIJ64m0M/BlREkoQF6\n+sj0TLYoTUVJ41M1RHmCptXS\n-----END PRIVATE KEY-----\n"
+        - name: PROJECT_ID
+          value: "datalikecorp"
+        - name: SERVER_PORT
+          value: "8080"
+        - name: CLIENT_EMAIL
+          value: "proyecto-optimus-salmones@datalikecorp.iam.gserviceaccount.com"
+        - name: MAIL_HOST
+          value: "smtp.gmail.com"
+        - name: MAIL_PORT
+          value: "587"
+        - name: MAIL_USERNAME
+          value: "emailsendercamanchaca@gmail.com"
+        - name: MAIL_PASSWORD
+          value: "deuvxzllhawyksyp"
+        - name: MAIL_SMPT_CONNECTIONTIMEOUT
+          value: "5000"
+        - name: MAIL_SMPT_WRITETIMEOUT
+          value: "5000"
+        - name: MAIL_SMPT_AUTH
+          value: "true"
+        - name: MAIL_SMPT_STARTTLS_ENABLE
+          value: "true"
+        - name: MAIL_SMPT_STARTTLS_REQUIRED
+          value: "true"

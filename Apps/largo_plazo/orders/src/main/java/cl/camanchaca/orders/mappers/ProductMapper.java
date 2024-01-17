@@ -96,4 +96,6 @@ public class ProductMapper {
                 .wfeMeat(productData.getWfeMeat())
                 .build();
     }
+
+    private ProductMapper(){}
 }

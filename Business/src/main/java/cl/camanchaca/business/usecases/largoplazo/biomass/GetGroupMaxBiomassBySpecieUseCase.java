@@ -1,17 +1,16 @@
 package cl.camanchaca.business.usecases.largoplazo.biomass;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.*;
 import cl.camanchaca.business.repositories.biomass.GroupSizeMaxRepository;
-import cl.camanchaca.business.responses.ProjectedBiomassResponse;
 import cl.camanchaca.business.utils.SizeUtils;
 import cl.camanchaca.domain.models.Group;
 import cl.camanchaca.domain.models.Period;
 import cl.camanchaca.domain.models.Size;
 import cl.camanchaca.domain.models.biomass.GroupSizeMax;
 import cl.camanchaca.domain.models.biomass.GroupSizeMaxValue;
-import cl.camanchaca.domain.models.biomass.GroupSizeMaximum;
 import cl.camanchaca.domain.models.biomass.GroupSizeMaximumDTO;
 import cl.camanchaca.domain.models.parameters.ParameterGroup;
 import cl.camanchaca.domain.models.product.ProductGroup;
@@ -33,7 +32,7 @@ public class GetGroupMaxBiomassBySpecieUseCase {
     private final SizeRepository sizeRepository;
 
     public Mono<ParametersResponse> apply(RequestParams params, Map<String, String> header) {
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periods -> {
                     if (periods.isEmpty()) {
@@ -52,12 +51,10 @@ public class GetGroupMaxBiomassBySpecieUseCase {
                                     }
                             )
                             .collectList()
-                            .flatMap(groupSizeMaxList -> {
-                                return processGroupSizeMax(groupSizeMaxList, params.getSpecie())
-                                        .flatMap(processedGroupSizeMaxList -> {
-                                            return Mono.just(ParametersResponse.of(processedGroupSizeMaxList, Long.valueOf(processedGroupSizeMaxList.size())));
-                                        });
-                            });
+                            .flatMap(groupSizeMaxList ->
+                                    processGroupSizeMax(groupSizeMaxList, params.getSpecie())
+                                        .flatMap(processedGroupSizeMaxList ->
+                                                Mono.just(ParametersResponse.of(processedGroupSizeMaxList, Long.valueOf(processedGroupSizeMaxList.size())))));
                 });
     }
 
@@ -77,7 +74,7 @@ public class GetGroupMaxBiomassBySpecieUseCase {
                             .map(sizeMap -> sizeMap.getOrDefault(sizeId, "N/A"));
 
                     Mono<String> qualityName = sizeRepository.getBySpecie(specie)
-                            .collectMap(Size::getId, size -> size.getPieceType())
+                            .collectMap(Size::getId, Size::getPieceType)
                             .map(sizeMap -> sizeMap.getOrDefault(sizeId, "N/A"));
 
                     return Mono.zip(groupNameMono, sizeName, qualityName)

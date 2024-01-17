@@ -1,7 +1,9 @@
 package cl.camanchaca.parametrization.adapter.postgresql.product.size;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.repositories.ParameterSizeRepository;
 import cl.camanchaca.domain.dtos.ParameterSizePerformanceDTO;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import cl.camanchaca.parametrization.mappers.ProductSizeMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,12 +33,12 @@ public class ParameterSizeDataAdapter implements ParameterSizeRepository {
 
     @Override
     public Flux<ParameterSizePerformanceDTO> getByPlantIdAndProductId(UUID plantId, Integer productId) {
-        return Flux.error(new RuntimeException("Metodo no implementado"));
+        return Flux.error(new InfraestructureException(Constans.NO_IMPLEMENT_METHOD.getValue()));
     }
 
     @Override
     public Flux<ParameterSizePerformanceDTO> getByPlantIdAndProductIdAndSizeId(UUID plantId, Integer productId, UUID sizeId) {
-        return Flux.error(new RuntimeException("Metodo no implementado"));
+        return Flux.error(new InfraestructureException(Constans.NO_IMPLEMENT_METHOD.getValue()));
     }
 
     @Override
@@ -58,7 +60,7 @@ public class ParameterSizeDataAdapter implements ParameterSizeRepository {
 
     @Override
     public Flux<ParameterSizePerformanceDTO> getByPageAndSizeAndPlantId(Integer page, Integer size, UUID plantId) {
-        return Flux.error(new RuntimeException("Metodo no implementado"));
+        return Flux.error(new InfraestructureException(Constans.NO_IMPLEMENT_METHOD.getValue()));
     }
 
     @Override
@@ -78,7 +80,7 @@ public class ParameterSizeDataAdapter implements ParameterSizeRepository {
 
     @Override
     public Mono<Long> countByPlant(UUID plantId) {
-        return Mono.error(new RuntimeException("Metodo no implementado"));
+        return Mono.error(new InfraestructureException(Constans.NO_IMPLEMENT_METHOD.getValue()));
     }
 
     @Override

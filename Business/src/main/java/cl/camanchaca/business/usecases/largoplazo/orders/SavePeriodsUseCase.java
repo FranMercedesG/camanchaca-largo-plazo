@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.orders;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.repositories.PeriodRepository;
 import cl.camanchaca.domain.models.Period;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ public class SavePeriodsUseCase  {
 
         return periodRepository.saveSelectedPeriod(getInitialPeriod(requestParams.getInitialPeriod()),
                 getFinalPeriod(requestParams.getFinalPeriod()),
-                header.get("user"))
+                header.get(Constans.USER.getValue()))
                 .map(newPeriod -> {
                     restoreBQOrdersUseCase.restoreDataOfBQ();
                     return newPeriod;

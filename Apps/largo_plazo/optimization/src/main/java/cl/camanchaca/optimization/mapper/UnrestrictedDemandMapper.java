@@ -90,6 +90,6 @@ public class UnrestrictedDemandMapper {
                 .build();
     }
 
-
+private UnrestrictedDemandMapper(){}
 }
 

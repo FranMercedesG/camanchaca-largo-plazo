@@ -28,4 +28,5 @@ public class OrderMonthlyPlanificationMapper {
                 .unrestrictedDemandId(data.getUnrestrictedDemandId())
                 .build();
     }
+    private OrderMonthlyPlanificationMapper(){}
 }

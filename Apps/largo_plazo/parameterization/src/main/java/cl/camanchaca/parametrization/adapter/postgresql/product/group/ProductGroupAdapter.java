@@ -2,6 +2,7 @@ package cl.camanchaca.parametrization.adapter.postgresql.product.group;
 
 import cl.camanchaca.business.repositories.ParameterGroupRepository;
 import cl.camanchaca.domain.dtos.ParameterGroupDTO;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import cl.camanchaca.parametrization.adapter.postgresql.group.GroupDataRepository;
 import cl.camanchaca.parametrization.mappers.ProductGroupMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,12 @@ public class ProductGroupAdapter implements ParameterGroupRepository {
     @Override
     public Flux<ParameterGroupDTO> getByProductCode(Integer codigo) {
         return productGroupDataRepository.findAllByProductId(codigo).map(ProductGroupMapper::toParameterGroupDTO);
+    }
+
+    @Override
+    public Flux<ParameterGroupDTO> getAll() {
+        return productGroupDataRepository.findAll()
+                .map(ProductGroupMapper::toParameterGroupDTO);
     }
 
     @Override
@@ -68,16 +75,17 @@ public class ProductGroupAdapter implements ParameterGroupRepository {
                         return groupDataRepository.insertGroup(ProductGroupMapper.toGroupData(parameterGroupDTO))
                                 .flatMap(insertedGroup -> {
                                     parameterGroupDTO.setGroupId(insertedGroup.getGroupId());
+                                    parameterGroupDTO.setGroupName(insertedGroup.getGroupName());
                                     return Mono.just(parameterGroupDTO);
                                 });
                     } else {
                         return groupDataRepository.existsById(groupId)
                                 .flatMap(exists -> {
-                                    if (exists) {
+                                    if (Boolean.TRUE.equals(exists)) {
                                         return groupDataRepository.save(ProductGroupMapper.toGroupData(parameterGroupDTO))
                                                 .thenReturn(parameterGroupDTO);
                                     } else {
-                                        return Mono.error(new RuntimeException("No se encontró el grupo para actualizar"));
+                                        return Mono.error(new InfraestructureException("No se encontró el grupo para actualizar"));
                                     }
                                 });
                     }

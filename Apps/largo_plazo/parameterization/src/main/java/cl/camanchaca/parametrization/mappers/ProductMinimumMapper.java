@@ -21,4 +21,6 @@ public class ProductMinimumMapper {
                 .status(data.getStatus())
                 .build();
     }
+
+    private ProductMinimumMapper(){}
 }

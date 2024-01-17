@@ -1,6 +1,7 @@
 package cl.camanchaca.business.usecases.shared;
 
 import cl.camanchaca.business.generic.BusinessError;
+import cl.camanchaca.business.generic.BusinessException;
 import cl.camanchaca.business.generic.Usecase;
 import cl.camanchaca.business.repositories.ExcelRepository;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class ReadExcel<T> extends Usecase<InputStream, Flux<T>>{
                         return Mono.error(new BusinessError(throwable.getMessage()));
                     });
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new BusinessException(e.getLocalizedMessage());
         }
     }
 }

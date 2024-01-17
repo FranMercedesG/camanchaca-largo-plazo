@@ -1,6 +1,5 @@
 package cl.camanchaca.business.usecases.parameters;
 
-import cl.camanchaca.business.generic.Usecase;
 import cl.camanchaca.business.repositories.PlantRepository;
 import cl.camanchaca.domain.models.Plant;
 import lombok.AllArgsConstructor;

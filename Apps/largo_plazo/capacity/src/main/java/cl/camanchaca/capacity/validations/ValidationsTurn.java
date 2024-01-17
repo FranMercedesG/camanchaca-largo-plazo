@@ -1,5 +1,6 @@
 package cl.camanchaca.capacity.validations;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.domain.models.Period;
 import cl.camanchaca.domain.models.PlanificationPeriod;
 import cl.camanchaca.utils.LocalDateUtils;
@@ -42,8 +43,8 @@ public class ValidationsTurn {
 
     public static void validateHeader(ServerRequest.Headers headers) {
         Stream.of(
-                headers.header("user").get(0),
-                headers.header("office").get(0)
+                headers.header(Constans.USER.getValue()).get(0),
+                headers.header(Constans.OFFICE.getValue()).get(0)
         ).forEach(Objects::requireNonNull);
     }
 }

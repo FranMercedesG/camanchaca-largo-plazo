@@ -1,8 +1,10 @@
 package cl.camanchaca.parametrization.adapter.postgresql.product.performance;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.repositories.ParameterPerformanceRepository;
 import cl.camanchaca.domain.dtos.ParameterSizePerformanceDTO;
 import cl.camanchaca.domain.models.parameters.ParameterPerformance;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import cl.camanchaca.parametrization.adapter.postgresql.product.size.ProductSizeDataRepository;
 import cl.camanchaca.parametrization.mappers.ProductSizeMapper;
 import lombok.AllArgsConstructor;
@@ -21,7 +23,7 @@ public class ProductPerformanceAdapter implements ParameterPerformanceRepository
 
     @Override
     public Flux<ParameterSizePerformanceDTO> getAll() {
-        return Flux.error(new RuntimeException("Metodo no implementado"));
+        return Flux.error(new InfraestructureException(Constans.NO_IMPLEMENT_METHOD.getValue()));
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ProductPerformanceAdapter implements ParameterPerformanceRepository
 
     @Override
     public Flux<ParameterSizePerformanceDTO> getByPageAndSizeAndPlantId(Integer page, Integer size, UUID plantId) {
-       return Flux.error(new RuntimeException(/*TODO*/"Metodo no implemetado"));
+       return Flux.error(new InfraestructureException(Constans.NO_IMPLEMENT_METHOD.getValue()));
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ProductPerformanceAdapter implements ParameterPerformanceRepository
 
     @Override
     public Flux<ParameterSizePerformanceDTO> saveAll(Flux<ParameterPerformance> performances) {
-        return Flux.error(new RuntimeException("Metodo no implementado"));
+        return Flux.error(new InfraestructureException(Constans.NO_IMPLEMENT_METHOD.getValue()));
     }
 
     @Override

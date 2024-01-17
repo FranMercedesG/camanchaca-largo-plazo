@@ -1,7 +1,6 @@
 package cl.camanchaca.business.repositories;
 
 import cl.camanchaca.domain.dtos.ParameterGroupDTO;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -10,6 +9,9 @@ import java.util.UUID;
 
 public interface ParameterGroupRepository {
     Flux<ParameterGroupDTO> getByProductCode(Integer codigo);
+
+    Flux<ParameterGroupDTO> getAll();
+
     Flux<ParameterGroupDTO> getByProductIdAndGroupId(Integer productId, UUID groudId);
     Mono<ParameterGroupDTO> save(ParameterGroupDTO parameterGroupDTO);
 

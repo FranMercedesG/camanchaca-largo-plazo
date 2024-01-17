@@ -85,4 +85,6 @@ public class ProjectedBQBiomassBQMapper {
                 ? null
                 : (int) value.getLongValue();
     }
+
+    private ProjectedBQBiomassBQMapper(){}
 }

@@ -9,8 +9,6 @@ import cl.camanchaca.domain.models.product.ProductPlant;
 import lombok.AllArgsConstructor;
 import reactor.core.publisher.Mono;
 
-import java.util.stream.Collectors;
-
 @AllArgsConstructor
 public class GetParameterPlantsUseCase extends Usecase<RequestParams, Mono<ParametersResponseWithColumnNames>> {
 

@@ -54,7 +54,7 @@ public class GetParameterCapacityWithSKUCodeAndPlantUseCase extends Usecase<Map<
                 .filter(ParameterPlantDTO::getStatus)
                 .map(ParameterPlantDTO::getProductId)
                 .next()
-                .flatMap(integer -> productRepository.findById(integer))
+                .flatMap(productRepository::findById)
                 .flatMap(product -> parameterCapacityRepository.getByPlantIdAndProductId(plantId, productCode)
                         .collectList()
                         .map(capacitiesDTOS -> ProductCapacity.builder()

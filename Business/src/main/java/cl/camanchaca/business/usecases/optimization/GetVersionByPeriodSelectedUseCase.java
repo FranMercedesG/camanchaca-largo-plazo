@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.optimization;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.repositories.MonthlyPlanificationRepository;
 import cl.camanchaca.business.repositories.PeriodRepository;
@@ -22,7 +23,7 @@ public class GetVersionByPeriodSelectedUseCase {
 
     public Mono<ParametersResponse> apply(Map<String, String> header) {
 
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periods -> {
                     if (periods.isEmpty()) {

@@ -1,5 +1,6 @@
 package cl.camanchaca.capacity.adapters.entrypoints.rest.capacity.baseperiodscenario;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.usecases.largoplazo.capacity.productivedays.GetAllProductiveDaysUseCase;
 import cl.camanchaca.business.usecases.largoplazo.capacity.productivedays.SaveProductiveDaysUseCase;
@@ -24,7 +25,7 @@ public class BasePeriodScenarioController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/capacity/productive-days";
+    private static final String URL_BASE = "/capacity/productive-days";
     @Bean
     public RouterFunction<ServerResponse> getAllProductiveDays(GetAllProductiveDaysUseCase useCase) {
         return route(
@@ -34,9 +35,9 @@ public class BasePeriodScenarioController {
                         .validateParamsPagination(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             CapacityValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .flatMap(s ->
@@ -57,9 +58,9 @@ public class BasePeriodScenarioController {
                         .collectList()
                         .flatMapMany(o -> {
                             CapacityValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .collectList()

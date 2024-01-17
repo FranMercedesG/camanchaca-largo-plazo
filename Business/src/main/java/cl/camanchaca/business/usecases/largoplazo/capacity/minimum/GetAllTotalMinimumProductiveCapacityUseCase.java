@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.capacity.minimum;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.BaseScenarioRepository;
@@ -11,6 +12,7 @@ import cl.camanchaca.domain.models.capacity.minimum.MinimumCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumCapacityValue;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumDailyProductiveCapacity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
@@ -22,6 +24,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 public class GetAllTotalMinimumProductiveCapacityUseCase {
 
@@ -35,7 +38,7 @@ public class GetAllTotalMinimumProductiveCapacityUseCase {
 
     public Mono<ParametersResponse> apply(RequestParams requestParams, Map<String, String> header) {
 
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periodsSelected -> {
                     if (periodsSelected.isEmpty()) {
@@ -49,10 +52,10 @@ public class GetAllTotalMinimumProductiveCapacityUseCase {
                             .collectList()
                             .filter(o -> !o.isEmpty())
                             .flatMap(periods -> {
-                                System.out.println("periods: " + periods);
+                                log.info("periods: " + periods);
                                 return minimumRepository.getAllByPeriod(periods.stream().map(BasePeriodScenario::getPeriod).collect(Collectors.toList()))
                                         .filter(dpc -> {
-                                            System.out.println("maximum daily: " + dpc.toString());
+                                            log.info("maximum daily: " + dpc.toString());
                                             return dpc.getName() != null;
                                         })
                                         .groupBy(MinimumDailyProductiveCapacity::getName)
@@ -74,9 +77,9 @@ public class GetAllTotalMinimumProductiveCapacityUseCase {
                                                     .collect(Collectors.toList());
                                             minimumCapacity.setCapacity(capacities);
                                             return minimumCapacity;
-                                        })).collectList().map(maximumCapacities -> {
-                                            return ParametersResponse.of(maximumCapacities, Long.valueOf(maximumCapacities.size()));
-                                        });
+                                        }))
+                                        .collectList()
+                                        .map(maximumCapacities ->  ParametersResponse.of(maximumCapacities, Long.valueOf(maximumCapacities.size())));
                             });
                 });
     }

@@ -1,6 +1,6 @@
 package cl.camanchaca.parametrization.entrypoints.rest;
 
-import cl.camanchaca.business.usecases.largoplazo.parameters.SaveParameterGroupUseCase;
+import cl.camanchaca.business.usecases.largoplazo.parameters.*;
 import cl.camanchaca.business.usecases.shared.ReadExcel;
 import cl.camanchaca.domain.dtos.group.GroupSKUParameterDTO;
 import cl.camanchaca.domain.models.product.ProductGroup;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -20,8 +21,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import java.io.InputStream;
 import cl.camanchaca.business.generic.RequestParams;
-import cl.camanchaca.business.usecases.largoplazo.parameters.GetParameterGroupByCodeUseCase;
-import cl.camanchaca.business.usecases.largoplazo.parameters.GetParameterGroupUseCase;
 import cl.camanchaca.parametrization.validations.ParametersValidations;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import reactor.core.publisher.Mono;
@@ -33,7 +32,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class GroupController {
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/parameters/group";
+    private static final String URL_BASE = "/parameters/group";
 
     @Bean
     public RouterFunction<ServerResponse> uploadGroup(@Qualifier("getReadGroupExcel") ReadExcel<ProductGroup> useCase) {
@@ -56,9 +55,7 @@ public class GroupController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest(throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 @Bean
@@ -106,7 +103,7 @@ public class GroupController {
                                 .validateBody(
                                         request.bodyToMono(GroupSKUParameterDTO.class)
                                 )
-                                .flatMapMany(availableBiomasses -> useCase.apply(availableBiomasses))
+                                .flatMapMany(useCase)
                                 .collectList()
                                 .flatMap(result ->
                                         ServerResponse.ok()
@@ -116,8 +113,27 @@ public class GroupController {
                                 .switchIfEmpty(ServerResponse.notFound().build())
                                 .onErrorResume(errorhandler::badRequest)
         );
-
-
     }
+
+        @Bean
+        public RouterFunction<ServerResponse> downloadGroup(DownloadParameterGroupUseCase useCase) {
+            return RouterFunctions.route(
+                    RequestPredicates.GET(URL_BASE + "/excel/download"),
+                    request -> useCase.apply()
+                            .flatMap(data -> {
+                                        HttpHeaders headers = new HttpHeaders();
+                                        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                                        headers.setContentDispositionFormData("attachment", "group_parameter.xlsx");
+                                        return ServerResponse.ok()
+                                                .headers(h -> h.putAll(headers))
+                                                .bodyValue(data);
+                                    }
+                            )
+                            .switchIfEmpty(ServerResponse.notFound().build())
+                            .onErrorResume(errorhandler::badRequest)
+            );
+        }
+
+
 
 }

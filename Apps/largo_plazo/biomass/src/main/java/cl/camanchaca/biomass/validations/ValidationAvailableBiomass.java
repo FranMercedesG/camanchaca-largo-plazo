@@ -1,6 +1,7 @@
 package cl.camanchaca.biomass.validations;
 
 import cl.camanchaca.domain.dtos.biomass.AvailableBiomassDTO;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import cl.camanchaca.generics.errors.InfrastructureError;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +16,7 @@ public class ValidationAvailableBiomass {
                     data.getData().stream()
                             .map(availableBiomass -> {
                                 if (Boolean.FALSE.equals(validateDateFormat(availableBiomass.getFecpro()))) {
-                                    throw new RuntimeException("Formato FecPro errado");
+                                    throw new InfraestructureException("Formato FecPro errado");
                                 }
                                 return availableBiomass;
                             })

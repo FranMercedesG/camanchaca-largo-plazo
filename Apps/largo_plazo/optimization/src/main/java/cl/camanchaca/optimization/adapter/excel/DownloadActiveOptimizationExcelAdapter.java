@@ -1,8 +1,8 @@
 package cl.camanchaca.optimization.adapter.excel;
 
 import cl.camanchaca.business.repositories.DownloadActiveOptimizationRepository;
-import cl.camanchaca.domain.models.demand.UnrestrictedDemand;
 import cl.camanchaca.domain.models.optimization.Optimization;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -65,7 +65,7 @@ public class DownloadActiveOptimizationExcelAdapter implements DownloadActiveOpt
                     return Mono.just(bos.toByteArray());
                 }
             } catch (IOException e) {
-                return Mono.error(new RuntimeException("Error al generar el archivo Excel", e));
+                return Mono.error(new InfraestructureException("Error al generar el archivo Excel"));
             }
         });
     }

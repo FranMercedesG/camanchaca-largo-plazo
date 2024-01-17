@@ -56,7 +56,7 @@ public class GetParameterPerformanceWithSKUCodeAndPlantUseCase extends Usecase<M
                 .filter(ParameterPlantDTO::getStatus)
                 .map(ParameterPlantDTO::getProductId)
                 .next()
-                .flatMap(integer -> productRepository.findById(integer))
+                .flatMap(productRepository::findById)
                 .flatMap(product ->
                         parameterPerformanceRepository.getByPlantIdAndProductId(plantId, productCode)
                                 .collectList()

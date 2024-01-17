@@ -9,4 +9,3 @@ RUN mv /app/${JAR_NAME}.jar /app/APP.jar
 
 EXPOSE 8080
 CMD ["java", "-jar", "APP.jar"]
-

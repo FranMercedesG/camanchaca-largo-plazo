@@ -19,4 +19,6 @@ public class BasePeriodScenarioMapper {
                 .workDays(data.getWorkDays())
                 .build();
     }
+
+    private BasePeriodScenarioMapper(){}
 }

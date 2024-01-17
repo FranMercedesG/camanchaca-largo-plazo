@@ -1,5 +1,6 @@
 package cl.camanchaca.orders.entrypoints.rest.demand;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.usecases.largoplazo.orders.demand.SaveUnrestrictedDemandAdminUseCase;
 import cl.camanchaca.domain.models.demand.UnrestrictedDemand;
 import cl.camanchaca.generics.MainErrorhandler;
@@ -21,7 +22,7 @@ public class UnrestrictedDemandController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/demand";
+    private static final String URL_BASE = "/demand";
     @Bean
     public RouterFunction<ServerResponse> saveDemand(SaveUnrestrictedDemandAdminUseCase useCase) {
         return route(
@@ -32,9 +33,9 @@ public class UnrestrictedDemandController {
                         .collectList()
                         .flatMapMany(o -> {
                             DemandValidations.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo, "plataforma");
                         })
                         .collectList()

@@ -15,5 +15,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.poi/poi
     implementation 'org.apache.poi:poi:5.2.3'
     implementation 'org.apache.poi:poi-ooxml:5.2.3'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.apache.tika:tika-core:2.4.0'
 
 }

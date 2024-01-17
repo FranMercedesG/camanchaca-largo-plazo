@@ -15,11 +15,13 @@ public class GenericValidations {
     }
 
     public static Mono<String> validateQueryParam(ServerRequest serverRequest, String param) {
-        if (serverRequest.queryParam(param).isEmpty()) {
+        if (serverRequest.queryParam(param).isPresent()) {
+            return Mono.just(serverRequest.queryParam(param).get());
+        }else {
             return Mono.error(new InfrastructureError("02"));
+
         }
-        return Mono.just(serverRequest.queryParam(param).get());
     }
 
-
+private GenericValidations(){}
 }

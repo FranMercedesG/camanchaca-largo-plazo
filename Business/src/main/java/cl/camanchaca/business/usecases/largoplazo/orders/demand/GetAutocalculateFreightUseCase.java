@@ -20,9 +20,9 @@ public class GetAutocalculateFreightUseCase {
         return bigQueryDemand.getFreightsByPortAndIncoterms(body.getPort(),
                         body.getIncoterms())
                 .collectList()
-                .flatMap(o -> {
-                    return Mono.just(ParametersResponse.of(o, (long) o.size()));
-                });
+                .flatMap(o ->
+                    Mono.just(ParametersResponse.of(o, (long) o.size()))
+                );
 
     }
 
@@ -31,9 +31,7 @@ public class GetAutocalculateFreightUseCase {
         return bigQueryDemand.getFreightsByPortAndIncoterms(body.getPort(),
                         body.getIncoterms())
                 .collectList()
-                .map(o -> {
-                    return o.get(0).getFreightValue();
-                });
+                .map(o -> o.get(0).getFreightValue());
 
     }
 }

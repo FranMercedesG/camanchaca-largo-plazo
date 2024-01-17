@@ -2,6 +2,7 @@ package cl.camanchaca.business.usecases.largoplazo.biomass;
 
 
 import cl.camanchaca.business.generic.BusinessError;
+import cl.camanchaca.business.generic.BusinessException;
 import cl.camanchaca.business.repositories.ExcelRepository;
 import cl.camanchaca.business.responses.ProjectedBiomassResponse;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class ReadProjectedBiomassExcelUseCase implements BiFunction<String, Inpu
                         return Mono.error(new BusinessError("Error con los datos del excel"));
                     });
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new BusinessException(e.getLocalizedMessage());
         }
     }
 }

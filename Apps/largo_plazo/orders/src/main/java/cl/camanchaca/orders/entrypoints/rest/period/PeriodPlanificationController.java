@@ -1,5 +1,6 @@
 package cl.camanchaca.orders.entrypoints.rest.period;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.usecases.largoplazo.orders.SavePeriodsUseCase;
 import cl.camanchaca.generics.MainErrorhandler;
 import cl.camanchaca.orders.validations.ValidationsTurn;
@@ -28,9 +29,9 @@ public class PeriodPlanificationController {
                         ValidationsTurn.validateParams(request)
                                 .flatMap( o -> {
                                     ValidationsTurn.validateHeader(request.headers());
-                                    String user = request.headers().header("user").get(0);
-                                    String office = request.headers().header("office").get(0);
-                                    Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                                    String user = request.headers().header(Constans.USER.getValue()).get(0);
+                                    String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                                    Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                                     return useCase.apply(o, headerInfo);
                                 })
                                 .flatMap(s ->

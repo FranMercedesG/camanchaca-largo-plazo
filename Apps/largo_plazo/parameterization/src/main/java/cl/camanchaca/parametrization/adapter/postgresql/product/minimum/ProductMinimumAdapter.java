@@ -21,6 +21,11 @@ public class ProductMinimumAdapter implements ParameterMinimumRepository {
     }
 
     @Override
+    public Flux<ParameterMinimumDTO> getAll() {
+        return productMinimumDataRepository.findAll().map(ProductMinimumMapper::toParameterMinimumDTO);
+    }
+
+    @Override
     public Flux<ParameterMinimumDTO> getByProductIdAndSizeId(Integer productId, UUID minimumId) {
         return productMinimumDataRepository.findByProductIdAndMinimumId(productId,minimumId)
                 .map(ProductMinimumMapper::toParameterMinimumDTO);

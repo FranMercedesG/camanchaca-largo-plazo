@@ -40,9 +40,9 @@ public class RestoreBIomassUseCase {
                     return availableBiomass;
                 })
                 .flatMap(availableBiomassRepository::saveAvailableBiomass, 3)
-                .onErrorContinue((throwable, o) -> {
-                    throwable.printStackTrace();
-                });
+                .onErrorContinue((throwable, o) ->
+                    throwable.printStackTrace()
+                );
     }
 
     private Flux<RealBiomass> saveRealBiomassBQ() {
@@ -53,8 +53,8 @@ public class RestoreBIomassUseCase {
                     return realBiomass;
                 })
                 .flatMap(realBiomassRepository::save, 3)
-                .onErrorContinue((throwable, o) -> {
-                    throwable.printStackTrace();
-                });
+                .onErrorContinue((throwable, o) ->
+                    throwable.printStackTrace()
+               );
     }
 }

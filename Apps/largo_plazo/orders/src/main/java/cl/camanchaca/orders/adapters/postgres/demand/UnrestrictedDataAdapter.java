@@ -1,5 +1,6 @@
 package cl.camanchaca.orders.adapters.postgres.demand;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.repositories.UnrestrictedDemandRepository;
 import cl.camanchaca.domain.models.demand.UnrestrictedDemand;
 import cl.camanchaca.orders.mappers.UnrestrictedDemandMapper;
@@ -102,13 +103,13 @@ public class UnrestrictedDataAdapter implements UnrestrictedDemandRepository {
     @Override
     public Flux<String> getOffice() {
         return Flux.fromArray(OfficeEnum.values())
-                .map(salesStatusEnum -> salesStatusEnum.name());
+                .map(Enum::name);
     }
 
     @Override
     public Flux<String> getSalesType() {
         return Flux.fromArray(SalesTypeEnum.values())
-                .map(salesStatusEnum -> salesStatusEnum.name());
+                .map(Enum::name);
     }
 
     @Override
@@ -121,7 +122,7 @@ public class UnrestrictedDataAdapter implements UnrestrictedDemandRepository {
         StringBuilder baseQuery = new StringBuilder("SELECT COUNT(*) FROM unrestricted_demand WHERE oficina = :office and periodo BETWEEN :startDate AND :endDate");
 
         Map<String, Object> params = new HashMap<>();
-        params.put("office", office);
+        params.put(Constans.OFFICE.getValue(), office);
         params.put("startDate", startDate);
         params.put("endDate", endDate);
 

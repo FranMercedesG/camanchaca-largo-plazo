@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface MaximumProductiveCapacityDataRepository extends ReactiveCrudRepository<MaximumProductiveCapacityData, UUID> {
 
     @Query("SELECT pc.productive_capacity_id as productiveCapacityId, pc.name as name, pdpc.period_daily_productive_capacity_id as periodDailyProductiveCapacityId, pdpc.maximum_capacity as maximumCapacity, pdpc.period as period FROM productive_capacity pc INNER JOIN period_daily_productive_capacity pdpc ON pc.productive_capacity_id = pdpc.productive_capacity_id")
-    Flux<MaximumProductiveCapacityDTO> findAllWithDailyCapacity();;
+    Flux<MaximumProductiveCapacityDTO> findAllWithDailyCapacity();
     @Query("SELECT pc.productive_capacity_id as capacityid, " +
             "pc.name as name, " +
             "pdpc.period_daily_productive_capacity_id as perioddailyid, " +

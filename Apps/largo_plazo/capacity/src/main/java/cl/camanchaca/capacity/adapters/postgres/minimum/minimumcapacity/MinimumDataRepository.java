@@ -1,6 +1,5 @@
 package cl.camanchaca.capacity.adapters.postgres.minimum.minimumcapacity;
 
-import cl.camanchaca.domain.models.capacity.maximum.MaximumTotalProductiveCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumTotalProductiveCapacity;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;

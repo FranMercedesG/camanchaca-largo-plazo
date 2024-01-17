@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.orders.demand;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.repositories.UnrestrictedDemandRepository;
 import cl.camanchaca.domain.models.demand.UnrestrictedDemand;
 import lombok.AllArgsConstructor;
@@ -18,9 +19,9 @@ public class SaveUnrestrictedDemandAdminUseCase {
 
     public Flux<UnrestrictedDemand> apply(List<UnrestrictedDemand> unrestrictedDemands, Map<String, String> header, String source) {
 
-        validations(unrestrictedDemands, source, header.get("user"));
+        validations(unrestrictedDemands, source, header.get(Constans.USER.getValue()));
 
-        return unrestrictedDemandRepository.deleteAllByUserAndOrigen(header.get("user"), source.toLowerCase())
+        return unrestrictedDemandRepository.deleteAllByUserAndOrigen(header.get(Constans.USER.getValue()), source.toLowerCase())
                 .thenMany(unrestrictedDemandRepository.saveAll(Flux.fromIterable(unrestrictedDemands)));
 
 

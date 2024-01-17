@@ -21,5 +21,7 @@ public class RequestParams {
     private LocalDateTime from;
     private LocalDateTime to;
     private LocalDate date;
-
+    private String toEmail;
+    private String subject;
+    private String text;
 }

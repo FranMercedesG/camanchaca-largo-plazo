@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.26/8f8cf0372abf564913e9796623aac4c8ea44025a/lombok-1.18.26.jar" />
+        </processorPath>
+        <module name="camanchaca.camanchaca-largo-plazo-Business.test" />
+        <module name="camanchaca.largo_plazo-biomass.main" />
+        <module name="camanchaca.largo_plazo-capacity.test" />
+        <module name="camanchaca.camanchaca-largo-plazo-Business.main" />
+        <module name="camanchaca.largo_plazo-parameterization.test" />
+        <module name="camanchaca.largo_plazo-transversal.test" />
+        <module name="camanchaca.largo_plazo-biomass.test" />
+        <module name="camanchaca.largo_plazo-transversal.main" />
+        <module name="camanchaca.largo_plazo-parameterization.main" />
+        <module name="camanchaca.largo_plazo-optimization.test" />
+        <module name="camanchaca.largo_plazo-capacity.main" />
+        <module name="camanchaca.camanchaca-largo-plazo-Domain.test" />
+        <module name="camanchaca.largo_plazo-orders.main" />
+        <module name="camanchaca.camanchaca-largo-plazo-Domain.main" />
+        <module name="camanchaca.largo_plazo-optimization.main" />
+        <module name="camanchaca.largo_plazo-orders.test" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="11" />
+  </component>
+</project>

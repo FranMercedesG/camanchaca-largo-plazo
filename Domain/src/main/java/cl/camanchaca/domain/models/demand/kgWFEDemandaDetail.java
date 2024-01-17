@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class kgWFEDemandaDetail {
+public class KgWFEDemandaDetail {
     private LocalDate date;
     private BigDecimal value;
 }

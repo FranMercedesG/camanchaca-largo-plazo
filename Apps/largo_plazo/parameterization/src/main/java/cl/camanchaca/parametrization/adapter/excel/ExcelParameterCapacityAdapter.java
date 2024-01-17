@@ -4,6 +4,7 @@ package cl.camanchaca.parametrization.adapter.excel;
 import cl.camanchaca.business.repositories.ExcelRepository;
 import cl.camanchaca.domain.models.parameters.ParameterCapacity;
 import cl.camanchaca.domain.models.product.ProductCapacity;
+import cl.camanchaca.parametrization.adapter.postgresql.procutive.capacity.ProductiveCapacityData;
 import cl.camanchaca.parametrization.adapter.postgresql.procutive.capacity.ProductiveCapacityDataRepository;
 import cl.camanchaca.parametrization.adapter.postgresql.product.ProductDataRepository;
 import lombok.AllArgsConstructor;
@@ -39,7 +40,7 @@ public class ExcelParameterCapacityAdapter implements ExcelRepository<ProductCap
 
     private Flux<ProductCapacity> readFile2(InputStream file) {
         return productiveCapacityDataRepository.findAll()
-                .map(productSizeData -> productSizeData.getProductiveCapacityId())
+                .map(ProductiveCapacityData::getProductiveCapacityId)
                 .collectList()
                 .flatMapMany(uuids -> {
                     DataFormatter dataFormatter = new DataFormatter();

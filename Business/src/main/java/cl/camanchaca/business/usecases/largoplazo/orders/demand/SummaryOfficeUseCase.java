@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.orders.demand;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.ParametersResponse;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.PeriodRepository;
@@ -26,7 +27,7 @@ public class SummaryOfficeUseCase {
 
     private final PeriodRepository periodRepository;
     public Mono<ParametersResponse> apply(RequestParams requestParams, Map<String, String> header) {
-        return periodRepository.getSelectedPeriodByUser(header.get("user")).collectList()
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue())).collectList()
                 .flatMap(periods -> {
                     if (periods.isEmpty()) {
                         return Mono.just(ParametersResponse.of(Collections.emptyList(), 0L));
@@ -37,7 +38,7 @@ public class SummaryOfficeUseCase {
                     var offset = (requestParams.getPage() - 1) * requestParams.getSize();
                     
                     return unrestrictedDemandRepository.getAllOfficeBetweenDatesAndPageAndSizeAndFilters(
-                                    offset, requestParams.getSize(), period.getInitialPeriod(), period.getFinalPeriod(),requestParams.getSpecie(), requestParams.getFamily(),  header.get("office")
+                                    offset, requestParams.getSize(), period.getInitialPeriod(), period.getFinalPeriod(),requestParams.getSpecie(), requestParams.getFamily(),  header.get(Constans.OFFICE.getValue())
                             )
                             .collectList()
                             .flatMap(unrestrictedDemandList ->

@@ -3,7 +3,6 @@ package cl.camanchaca.domain.models;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,4 +48,5 @@ public class Order {
     BigDecimal cierrePedidoUmb;
     BigDecimal rendimiento;
     LocalDateTime updateDate;
+    String oficina;
 }

@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.orders.demand;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.repositories.DownloadOfficeRepository;
 import cl.camanchaca.business.repositories.PeriodRepository;
@@ -32,7 +33,7 @@ public class DownloadDemandUnrestrictedOfficeUseCase {
     }
 
     private Flux<UnrestrictedDemandOffice> getData(RequestParams requestParams, Map<String, String> header) {
-        return periodRepository.getSelectedPeriodByUser(header.get("user")).collectList()
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue())).collectList()
                 .flatMapMany(periods -> {
                     if (periods.isEmpty()) {
                         return Flux.empty();
@@ -40,7 +41,7 @@ public class DownloadDemandUnrestrictedOfficeUseCase {
 
                     Period period = periods.get(0);
 
-                    return unrestrictedDemandRepository.getAllBetweenDatesByOffice(period.getInitialPeriod(), period.getFinalPeriod(), header.get("office")
+                    return unrestrictedDemandRepository.getAllBetweenDatesByOffice(period.getInitialPeriod(), period.getFinalPeriod(), header.get(Constans.OFFICE.getValue())
                             )
                             .collectList()
                             .flatMapMany(unrestrictedDemandList ->
@@ -82,9 +83,9 @@ public class DownloadDemandUnrestrictedOfficeUseCase {
                                                                         .sorted(Comparator.comparing(RmpDetail::getDate))
                                                                         .collect(Collectors.toList());
 
-                                                                List<kgWFEDemandaDetail> kgWFEDemandaDetails = demands.stream()
-                                                                        .map(demand -> new kgWFEDemandaDetail(demand.getPeriodo(), demand.getKgWFEDemanda()))
-                                                                        .sorted(Comparator.comparing(kgWFEDemandaDetail::getDate))
+                                                                List<KgWFEDemandaDetail> KgWFEDemandaDetails = demands.stream()
+                                                                        .map(demand -> new KgWFEDemandaDetail(demand.getPeriodo(), demand.getKgWFEDemanda()))
+                                                                        .sorted(Comparator.comparing(KgWFEDemandaDetail::getDate))
                                                                         .collect(Collectors.toList());
 
                                                                 List<KilosNetosDetail> kilosNetosDetails = demands.stream()
@@ -134,7 +135,7 @@ public class DownloadDemandUnrestrictedOfficeUseCase {
                                                                 uo.setProdFw(librasProdFwDetails);
                                                                 uo.setRmp(rmpDetails);
                                                                 uo.setFob(fobDetails);
-                                                                uo.setKgWFEDemanda(kgWFEDemandaDetails);
+                                                                uo.setKgWFEDemanda(KgWFEDemandaDetails);
                                                                 uo.setKilosNetos(kilosNetosDetails);
                                                                 return uo;
                                                             })

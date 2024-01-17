@@ -17,7 +17,7 @@ public class SpeciesController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/biomass/species";
+    private static final String URL_BASE = "/biomass/species";
 
     @Bean
     public RouterFunction<ServerResponse> getSpecies(GetSpeciesUseCase useCase){

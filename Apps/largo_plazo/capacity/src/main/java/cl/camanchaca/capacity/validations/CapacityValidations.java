@@ -1,12 +1,13 @@
 package cl.camanchaca.capacity.validations;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.domain.models.capacity.BasePeriodScenario;
 import cl.camanchaca.domain.models.capacity.maximum.MaximumCapacityValue;
 import cl.camanchaca.domain.models.capacity.maximum.MaximumCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumCapacity;
 import cl.camanchaca.domain.models.capacity.minimum.MinimumCapacityValue;
-import cl.camanchaca.domain.models.capacity.minimum.MinimumDailyProductiveCapacity;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import cl.camanchaca.generics.errors.InfrastructureError;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Flux;
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 
 public class CapacityValidations {
 
-    public CapacityValidations() {
+    private CapacityValidations() {
     }
 
     public static Mono<RequestParams> validateParamsPagination(ServerRequest request, RequestParams params) {
@@ -25,9 +26,9 @@ public class CapacityValidations {
                         .get())
                 .map(page -> {
                     int pageInt = Integer.parseInt(page);
-                    int pageSize = Integer.parseInt(request.queryParam("pageSize").get());
+                    int pageSize = Integer.parseInt(request.queryParam(Constans.PAGE_SIZE.getValue()).get());
                     if (pageInt <= 0 || pageSize <= 0) {
-                        throw new RuntimeException("La pagina o el tamaño no puede ser menor a 0");
+                        throw new InfraestructureException(Constans.PAGE_ERROR.getValue());
                     }
                     return params.toBuilder()
                             .page(pageInt)
@@ -39,8 +40,8 @@ public class CapacityValidations {
 
     public static void validateHeader(ServerRequest.Headers headers) {
         Stream.of(
-                headers.header("user").get(0),
-                headers.header("office").get(0)
+                headers.header(Constans.USER.getValue()).get(0),
+                headers.header(Constans.OFFICE.getValue()).get(0)
         ).forEach(Objects::requireNonNull);
     }
 

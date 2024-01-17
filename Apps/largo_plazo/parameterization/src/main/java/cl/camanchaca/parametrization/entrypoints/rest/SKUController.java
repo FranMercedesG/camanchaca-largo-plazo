@@ -1,6 +1,7 @@
 package cl.camanchaca.parametrization.entrypoints.rest;
 
 import cl.camanchaca.business.generic.RequestParams;
+import cl.camanchaca.business.usecases.largoplazo.parameters.DownloadParameterSKUUseCase;
 import cl.camanchaca.business.usecases.largoplazo.parameters.GetParameterSKUByCodeUseCase;
 import cl.camanchaca.business.usecases.largoplazo.parameters.GetParametersSKUUseCase;
 import cl.camanchaca.business.usecases.largoplazo.parameters.SaveSKUUseCase;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -35,7 +37,7 @@ public class SKUController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/parameters/sku";
+    private static final String URL_BASE = "/parameters/sku";
 
     @Bean
     public RouterFunction<ServerResponse> getProductByCode(GetParameterSKUByCodeUseCase useCase){
@@ -64,9 +66,7 @@ public class SKUController {
                         .and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
                 request -> ParametersValidations
                         .validateParamsPagination(request, RequestParams.builder().build())
-                        .flatMap(requestPageAndSize ->
-                                useCase.apply(requestPageAndSize)
-                        )
+                        .flatMap(useCase)
                         .flatMap(s ->
                                 ServerResponse.ok()
                                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,9 +98,7 @@ public class SKUController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest(throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 
@@ -120,6 +118,26 @@ public class SKUController {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .bodyValue(s)
                         )
+                        .onErrorResume(errorhandler::badRequest)
+        );
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> downloadSkuExcel(DownloadParameterSKUUseCase useCase) {
+        return RouterFunctions.route(
+                RequestPredicates
+                        .GET(URL_BASE + "/excel/download"),
+                request -> useCase.get()
+                        .flatMap(data -> {
+                                    HttpHeaders headers = new HttpHeaders();
+                                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                                    headers.setContentDispositionFormData("attachment", "sku_parameter.xlsx");
+                                    return ServerResponse.ok()
+                                            .headers(h -> h.putAll(headers))
+                                            .bodyValue(data);
+                                }
+                        )
+                        .switchIfEmpty(ServerResponse.notFound().build())
                         .onErrorResume(errorhandler::badRequest)
         );
     }

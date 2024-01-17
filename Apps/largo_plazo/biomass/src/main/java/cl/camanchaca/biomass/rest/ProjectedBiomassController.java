@@ -1,7 +1,7 @@
 package cl.camanchaca.biomass.rest;
 
-import cl.camanchaca.biomass.adapter.bigquery.biomass.ProjectedBiomassBQDataAdapter;
 import cl.camanchaca.biomass.validations.ValidationProjectedBiomass;
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.business.responses.ProjectedBiomassResponse;
 import cl.camanchaca.business.usecases.largoplazo.biomass.*;
@@ -32,9 +32,8 @@ public class ProjectedBiomassController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/biomass/projected";
+    private static final String URL_BASE = "/biomass/projected";
 
-    //
     @Bean
     public RouterFunction<ServerResponse> getAllListScenarios(GetAllBiomassScenariosUseCase useCase) {
         return route(
@@ -44,9 +43,9 @@ public class ProjectedBiomassController {
                         .validateParamsPagination(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             ValidationProjectedBiomass.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .flatMap(s ->
@@ -67,9 +66,9 @@ public class ProjectedBiomassController {
                         .validateParams(request, RequestParams.builder().build())
                         .flatMap(o -> {
                             ValidationProjectedBiomass.validateHeader(request.headers());
-                            String user = request.headers().header("user").get(0);
-                            String office = request.headers().header("office").get(0);
-                            Map<String, String> headerInfo = Map.of("user", user, "office", office);
+                            String user = request.headers().header(Constans.USER.getValue()).get(0);
+                            String office = request.headers().header(Constans.OFFICE.getValue()).get(0);
+                            Map<String, String> headerInfo = Map.of(Constans.USER.getValue(), user, Constans.OFFICE.getValue(), office);
                             return useCase.apply(o, headerInfo);
                         })
                         .flatMap(s ->
@@ -104,7 +103,7 @@ public class ProjectedBiomassController {
                 RequestPredicates
                         .GET(URL_BASE + "/{specie}"),
                 request -> Mono.fromCallable(() ->
-                                request.pathVariable("specie"))
+                                request.pathVariable(Constans.SPECIE.getValue()))
                         .flatMapMany(useCase::apply)
                         .collectList()
                         .flatMap(r -> ServerResponse.ok()
@@ -123,7 +122,7 @@ public class ProjectedBiomassController {
                 RequestPredicates
                         .GET(URL_BASE + "/excel/{specie}"),
                 request -> Mono.fromCallable(() ->
-                                request.pathVariable("specie"))
+                                request.pathVariable(Constans.SPECIE.getValue()))
                         .flatMap(useCase::apply)
                         .flatMap(data -> {
                                     HttpHeaders headers = new HttpHeaders();
@@ -153,7 +152,7 @@ public class ProjectedBiomassController {
                         .collectList()
                         .flatMapMany(inputStreams -> {
                             InputStream combined = InputStreamUtils.combineInputStreams(inputStreams);
-                            String specie = request.pathVariable("specie");
+                            String specie = request.pathVariable(Constans.SPECIE.getValue());
                             return useCase.apply(specie, combined);
                         })
                         .collectList()
@@ -162,9 +161,7 @@ public class ProjectedBiomassController {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(s)
                         )
-                        .onErrorResume(throwable ->
-                                errorhandler.badRequest((Throwable) throwable)
-                        )
+                        .onErrorResume(errorhandler::badRequest)
         );
     }
 
@@ -174,7 +171,7 @@ public class ProjectedBiomassController {
                 RequestPredicates
                         .POST(URL_BASE + "/{specie}"),
                 request -> Mono.fromCallable(() ->
-                                request.pathVariable("specie"))
+                                request.pathVariable(Constans.SPECIE.getValue()))
                         .flatMapMany(specie ->
                                 useCase
                                         .apply(

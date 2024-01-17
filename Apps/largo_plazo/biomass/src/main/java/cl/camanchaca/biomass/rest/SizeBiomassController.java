@@ -2,6 +2,7 @@ package cl.camanchaca.biomass.rest;
 
 
 import cl.camanchaca.biomass.validations.ValidationSizeBiomass;
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.usecases.largoplazo.biomass.GetSizeBiomassBySpecieUseCase;
 import cl.camanchaca.business.usecases.largoplazo.biomass.SaveSizeBiomassUseCase;
 import cl.camanchaca.domain.dtos.biomass.SizeBiomassDTO;
@@ -22,16 +23,16 @@ public class SizeBiomassController {
 
     private final MainErrorhandler errorhandler;
 
-    private final String URL_BASE = "/biomass/size";
+    private static final String URL_BASE = "/biomass/size";
 
     @Bean
     public RouterFunction<ServerResponse> getSizes(GetSizeBiomassBySpecieUseCase useCase) {
         return RouterFunctions.route(
                 RequestPredicates.GET(URL_BASE + "/{specie}"),
                 request -> Mono.fromCallable(() ->
-                                request.pathVariable("specie"))
+                                request.pathVariable(Constans.SPECIE.getValue()))
                         .map(String::toUpperCase)
-                        .flatMapMany(specie -> useCase.apply(specie))
+                        .flatMapMany(useCase)
                         .collectList()
                         .flatMap(result ->
                                 ServerResponse.ok()
@@ -49,7 +50,7 @@ public class SizeBiomassController {
                 RequestPredicates.POST(URL_BASE),
                 request -> ValidationSizeBiomass
                         .validateSizeBiomass(request.bodyToMono(SizeBiomassDTO.class))
-                        .flatMapMany(useCase::apply)
+                        .flatMapMany(useCase)
                         .collectList()
                         .flatMap(result ->
                                 ServerResponse.ok()

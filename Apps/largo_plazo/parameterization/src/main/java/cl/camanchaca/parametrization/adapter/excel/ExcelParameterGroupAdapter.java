@@ -2,13 +2,10 @@ package cl.camanchaca.parametrization.adapter.excel;
 
 import cl.camanchaca.business.repositories.ExcelRepository;
 import cl.camanchaca.domain.models.parameters.ParameterGroup;
-import cl.camanchaca.domain.models.parameters.ParameterSize;
 import cl.camanchaca.domain.models.product.ProductGroup;
-import cl.camanchaca.domain.models.product.ProductSize;
 import cl.camanchaca.parametrization.adapter.postgresql.group.GroupData;
 import cl.camanchaca.parametrization.adapter.postgresql.group.GroupDataRepository;
 import cl.camanchaca.parametrization.adapter.postgresql.product.ProductDataRepository;
-import cl.camanchaca.parametrization.adapter.postgresql.size.SizeData;
 import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;

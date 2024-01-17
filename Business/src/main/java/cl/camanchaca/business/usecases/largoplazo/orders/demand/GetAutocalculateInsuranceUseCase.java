@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class GetAutocalculateInsuranceUseCase {
                 .map(PrecioCierreUsdKgNetoDetail::getValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return sum.divide(BigDecimal.valueOf(purchPriceList.size()), 2, BigDecimal.ROUND_HALF_UP);
+        return sum.divide(BigDecimal.valueOf(purchPriceList.size()), 2, RoundingMode.HALF_UP);
 
     }
 }

@@ -21,7 +21,7 @@ public class ProductPlantDataAdapter implements ProductPlantRepository {
     public Flux<ParameterPlantDTO> saveAll(Flux<ParameterPlantDTO> parameters) {
         return parameters.map(ProductPlantMapper::toProductPlantData)
                 .collectList()
-                .flatMapMany(productPlantData -> productPlantDataRepository.saveAll(productPlantData))
+                .flatMapMany(productPlantDataRepository::saveAll)
                 .map(ProductPlantMapper::toProductPlant);
     }
 

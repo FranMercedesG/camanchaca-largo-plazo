@@ -1,6 +1,5 @@
 package cl.camanchaca.business.usecases.optimization;
 
-import cl.camanchaca.business.generic.Usecase;
 import cl.camanchaca.business.repositories.SizeRepository;
 import cl.camanchaca.business.repositories.optimization.OptimizationRepository;
 import cl.camanchaca.domain.models.optimization.Optimization;

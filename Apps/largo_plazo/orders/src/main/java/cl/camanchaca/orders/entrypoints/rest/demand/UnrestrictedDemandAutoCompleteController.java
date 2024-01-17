@@ -21,12 +21,12 @@ public class UnrestrictedDemandAutoCompleteController {
 
     private final MainErrorhandler errorhandler;
 
-    private  final String urlBase = "/demand/autocomplete";
+    private static final String URL_BASE = "/demand/autocomplete";
 
     @Bean
     public RouterFunction<ServerResponse> getOffice(GetOfficeUseCase useCase){
         return RouterFunctions.route(
-                RequestPredicates.GET(urlBase +"/office"),
+                RequestPredicates.GET(URL_BASE +"/office"),
                 request -> useCase.get()
                         .collectList()
                         .flatMap(s ->
@@ -40,7 +40,7 @@ public class UnrestrictedDemandAutoCompleteController {
     @Bean
     public RouterFunction<ServerResponse> getSalesType(GetSalesTypeUseCase useCase){
         return RouterFunctions.route(
-                RequestPredicates.GET(urlBase +"/sales-type"),
+                RequestPredicates.GET(URL_BASE +"/sales-type"),
                 request -> useCase.get()
                         .collectList()
                         .flatMap(s ->
@@ -54,7 +54,7 @@ public class UnrestrictedDemandAutoCompleteController {
     @Bean
     public RouterFunction<ServerResponse> getAllSaleStatus(GetSaleStatusUseCase useCase){
         return RouterFunctions.route(
-                RequestPredicates.GET(urlBase +"/sales-status"),
+                RequestPredicates.GET(URL_BASE +"/sales-status"),
                 request -> useCase.get()
                         .collectList()
                         .flatMap(s ->
@@ -68,7 +68,7 @@ public class UnrestrictedDemandAutoCompleteController {
     @Bean
     public RouterFunction<ServerResponse> getAllIncoTerm(GetAllIncoTermUseCase useCase){
         return RouterFunctions.route(
-                RequestPredicates.GET(urlBase +"/incoterm"),
+                RequestPredicates.GET(URL_BASE +"/incoterm"),
                 request -> useCase.get()
                         .collectList()
                         .flatMap(s ->
@@ -82,7 +82,7 @@ public class UnrestrictedDemandAutoCompleteController {
     @Bean
     public RouterFunction<ServerResponse> getAllDestinatioPort(GetAllDestinationPortUseCase useCase){
         return RouterFunctions.route(
-                RequestPredicates.GET(urlBase +"/ports"),
+                RequestPredicates.GET(URL_BASE +"/ports"),
                 request -> useCase.get()
                         .collectList()
                         .flatMap(s ->

@@ -2,6 +2,7 @@ package cl.camanchaca.biomass.adapter.postgres.groupsizemax;
 
 import cl.camanchaca.business.repositories.biomass.GroupSizeMaxRepository;
 import cl.camanchaca.domain.models.biomass.GroupSizeMax;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -9,7 +10,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -48,17 +48,15 @@ public class GroupMaxSizeDataAdapter implements GroupSizeMaxRepository {
 
             if (groupSizeMaxId == null) {
                 return groupDataRepository.insertData(toGroupSizeMaxData(groupSizeMax))
-                        .flatMap(insertedGroupSizeMax -> {
-                            return Mono.just(groupSizeMax);
-                        });
+                        .flatMap(insertedGroupSizeMax ->  Mono.just(groupSizeMax));
             } else {
                 return groupDataRepository.existsById(groupSizeMaxId)
                         .flatMap(exists -> {
-                            if (exists) {
+                            if (Boolean.TRUE.equals(exists)) {
                                 return groupDataRepository.save(toGroupSizeMaxData(groupSizeMax))
                                         .thenReturn(groupSizeMax);
                             } else {
-                                return Mono.error(new RuntimeException("No se encontró el grupo para actualizar"));
+                                return Mono.error(new InfraestructureException("No se encontró el grupo para actualizar"));
                             }
                         });
             }

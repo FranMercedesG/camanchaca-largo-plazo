@@ -6,21 +6,15 @@ import cl.camanchaca.business.repositories.ProductPlantRepository;
 import cl.camanchaca.business.repositories.ProductRepository;
 import cl.camanchaca.business.repositories.SizeRepository;
 import cl.camanchaca.domain.dtos.ParameterPlantDTO;
-import cl.camanchaca.domain.dtos.ParameterSizePerformanceDTO;
-import cl.camanchaca.domain.models.Product;
 import cl.camanchaca.domain.models.Size;
 import cl.camanchaca.domain.models.parameters.ParameterSize;
 import cl.camanchaca.domain.models.product.ProductSize;
 import lombok.AllArgsConstructor;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor

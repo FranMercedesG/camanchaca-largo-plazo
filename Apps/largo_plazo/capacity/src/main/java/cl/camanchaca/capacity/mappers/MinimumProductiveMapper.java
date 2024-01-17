@@ -75,5 +75,6 @@ public class MinimumProductiveMapper {
                 .build();
     }
 
+    private MinimumProductiveMapper(){}
 
 }

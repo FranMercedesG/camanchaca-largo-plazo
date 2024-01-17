@@ -3,7 +3,6 @@ package cl.camanchaca.business.usecases.largoplazo.capacity.productivedays;
 import cl.camanchaca.business.repositories.BaseScenarioRepository;
 import cl.camanchaca.domain.models.capacity.BasePeriodScenario;
 import lombok.AllArgsConstructor;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
 import java.util.List;

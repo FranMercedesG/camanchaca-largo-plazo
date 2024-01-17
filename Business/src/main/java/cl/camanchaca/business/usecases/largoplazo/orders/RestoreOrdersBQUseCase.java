@@ -1,5 +1,6 @@
 package cl.camanchaca.business.usecases.largoplazo.orders;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.repositories.PeriodRepository;
 import cl.camanchaca.business.repositories.ProductRepository;
 import cl.camanchaca.business.repositories.bigquery.SalmonOrdersBQRepository;
@@ -38,7 +39,7 @@ public class RestoreOrdersBQUseCase {
     public void restoreDataOfBQ() {
         log.info("Iniciar restauracion de bigquery en ordenes");
 
-        Map<String, String> header = Map.of("user", "system", "office", "chile");
+        Map<String, String> header = Map.of(Constans.USER.getValue(), "system", Constans.OFFICE.getValue(), "chile");
 
         //TODO change user to Admin
         periodRepository.getSelectedPeriodByUser("user1")
@@ -65,7 +66,7 @@ public class RestoreOrdersBQUseCase {
 
                                     return Mono.just(
                                             UnrestrictedDemand.builder()
-                                                    .oficina("")
+                                                    .oficina(order.getOficina())
                                                     .descripcion(product.getDescripcion())
                                                     .incoterm(order.getIncoTerms())
                                                     .seguro(insurance)
@@ -98,7 +99,8 @@ public class RestoreOrdersBQUseCase {
                                                     .trimDlbWK(BigDecimal.ZERO) //NO ESTA
                                                     .size(order.getEmp())
                                                     .estado(order.getPlanificationStatus())
-
+                                                    .destinatario(order.getNombreDestinatarioMercanciaPedido())
+                                                    .dv(order.getOrderId().toString())
                                             .build());
                             });
                 })

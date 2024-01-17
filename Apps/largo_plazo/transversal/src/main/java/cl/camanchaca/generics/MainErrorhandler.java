@@ -28,7 +28,6 @@ public class MainErrorhandler {
             return ServerResponse.badRequest().body(Mono.just(new ErrorResponse(error.getMessage(),
                             ((ErrorGeneric) error)
                                     .getType()
-                                    .orElse("Unknow")
                     )),
                     ErrorResponse.class);
         }

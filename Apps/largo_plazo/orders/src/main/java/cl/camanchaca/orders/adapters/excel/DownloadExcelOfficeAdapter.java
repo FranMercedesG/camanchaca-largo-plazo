@@ -1,10 +1,13 @@
 package cl.camanchaca.orders.adapters.excel;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.repositories.DownloadOfficeRepository;
 import cl.camanchaca.business.repositories.PeriodRepository;
 import cl.camanchaca.domain.models.Period;
 import cl.camanchaca.domain.models.demand.*;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -22,6 +25,7 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class DownloadExcelOfficeAdapter implements DownloadOfficeRepository {
@@ -256,11 +260,11 @@ public class DownloadExcelOfficeAdapter implements DownloadOfficeRepository {
                             return Mono.just(bos.toByteArray());
                         }
                     } catch (IOException e) {
-                        return Mono.error(new RuntimeException("Error al generar el archivo Excel", e));
+                        return Mono.error(new InfraestructureException("Error al generar el archivo Excel"));
                     } catch (IndexOutOfBoundsException e) {
-                        System.err.println("Error occurred: " + e.getMessage());
+                        log.error("Error occurred: " + e.getMessage());
                         e.printStackTrace();
-                        return Mono.error(new RuntimeException("Error al generar el archivo Excel", e));
+                        return Mono.error(new InfraestructureException("Error al generar el archivo Excel"));
                     }
 
                 }));
@@ -320,7 +324,7 @@ public class DownloadExcelOfficeAdapter implements DownloadOfficeRepository {
 
 
     private Mono<Period> getPeriod(Map<String, String> header) {
-        return periodRepository.getSelectedPeriodByUser(header.get("user"))
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
                 .collectList()
                 .flatMap(periods -> {
                     if (periods.isEmpty()) {

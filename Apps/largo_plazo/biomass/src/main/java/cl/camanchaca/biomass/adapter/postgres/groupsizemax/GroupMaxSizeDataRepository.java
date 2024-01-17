@@ -1,6 +1,5 @@
 package cl.camanchaca.biomass.adapter.postgres.groupsizemax;
 
-import cl.camanchaca.biomass.adapter.postgres.biomass.available.AvailableBiomassData;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;

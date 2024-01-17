@@ -34,7 +34,7 @@ public class UnrestrictedDemandOffice {
     private List<RmpDetail> rmp;
 
     private String auxOp;
-    private List<kgWFEDemandaDetail> kgWFEDemanda;
+    private List<KgWFEDemandaDetail> kgWFEDemanda;
     private BigDecimal kgWFEPlan;
     private String dif;
     private LocalDate periodo;

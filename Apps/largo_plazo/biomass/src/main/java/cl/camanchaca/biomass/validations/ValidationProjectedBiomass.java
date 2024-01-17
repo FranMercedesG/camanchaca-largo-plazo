@@ -1,7 +1,9 @@
 package cl.camanchaca.biomass.validations;
 
+import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
 import cl.camanchaca.domain.dtos.biomass.ProjectedBiomassDTO;
+import cl.camanchaca.generics.errors.InfraestructureException;
 import cl.camanchaca.generics.errors.InfrastructureError;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Flux;
@@ -33,9 +35,9 @@ public class ValidationProjectedBiomass {
                         .get())
                 .map(page -> {
                     int pageInt = Integer.parseInt(page);
-                    int pageSize = Integer.parseInt(request.queryParam("pageSize").get());
+                    int pageSize = Integer.parseInt(request.queryParam(Constans.PAGE_SIZE.getValue()).get());
                     if (pageInt <= 0 || pageSize <= 0) {
-                        throw new RuntimeException("La pagina o el tamaño no puede ser menor a 0");
+                        throw new InfraestructureException(Constans.PAGE_ERROR.getValue());
                     }
                     return params.toBuilder()
                             .page(pageInt)
@@ -50,19 +52,19 @@ public class ValidationProjectedBiomass {
                         .get())
                 .map(page -> {
                     int pageInt = Integer.parseInt(page);
-                    int pageSize = Integer.parseInt(request.queryParam("pageSize").get());
+                    int pageSize = Integer.parseInt(request.queryParam(Constans.PAGE_SIZE.getValue()).get());
                     String scenario = String.valueOf(request.queryParam("scenario").get());
                     if (pageInt <= 0 || pageSize <= 0) {
-                        throw new RuntimeException("La pagina o el tamaño no puede ser menor a 0");
+                        throw new InfraestructureException(Constans.PAGE_ERROR.getValue());
                     }
                     if(scenario == null || scenario.isEmpty()){
-                        throw new RuntimeException("Scenario no puede ser nulo");
+                        throw new InfraestructureException("Scenario no puede ser nulo");
                     }
 
-                    String specie = String.valueOf(request.queryParam("specie").get());
+                    String specie = String.valueOf(request.queryParam(Constans.SPECIE.getValue()).get());
 
                     if(specie == null || specie.isEmpty()){
-                        throw new RuntimeException("Specie no puede ser nulo");
+                        throw new InfraestructureException("Specie no puede ser nulo");
                     }
 
                     return params.toBuilder()
@@ -77,8 +79,8 @@ public class ValidationProjectedBiomass {
 
     public static void validateHeader(ServerRequest.Headers headers) {
         Stream.of(
-                headers.header("user").get(0),
-                headers.header("office").get(0)
+                headers.header(Constans.USER.getValue()).get(0),
+                headers.header(Constans.OFFICE.getValue()).get(0)
         ).forEach(Objects::requireNonNull);
     }
 }
