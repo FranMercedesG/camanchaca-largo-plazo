@@ -18,4 +18,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.apache.tika:tika-core:2.4.0'
 
+    implementation group: 'com.google.cloud.sql', name: 'cloud-sql-connector-r2dbc-postgres', version: '1.15.2'
+    implementation group: 'io.r2dbc', name: 'r2dbc-pool', version: '1.0.1.RELEASE'
+
 }

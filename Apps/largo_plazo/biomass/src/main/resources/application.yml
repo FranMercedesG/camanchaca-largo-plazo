@@ -1,23 +1,22 @@
 db:
-  host: ${HOST_DB:34.69.17.120}
-  port: ${PORT_DB:5432}
-  database: ${DATABASE_NAME:planificacion_largo_plazo}
-  username: ${DATABASE_USERNAME:developer}
-  password: ${DATABASE_PASSWORD:qT4Y72ZFoxzQ}
+  port: ${PORT_DB}
+  database: ${DATABASE_NAME}
+  username: ${DATABASE_USERNAME}
+  password: ${DATABASE_PASSWORD}
+  project: ${DATABASE_PROJECT}
+  region: ${DATABASE_REGION}
+  instance: ${DATABASE_INSTANCE}
+  url: "r2dbc:gcp:postgres://${db.username}:${db.password}@${db.project}:${db.region}:${db.instance}/${db.database}"
+
 
 bigquery:
-  project-id: ${PROJECT_ID:datalikecorp}
-  client-id: ${CLIENT_ID:106629867547536498653}
-  client-email: ${CLIENT_EMAIL:proyecto-optimus-salmones@datalikecorp.iam.gserviceaccount.com}
+  project-id: ${PROJECT_ID}
+  client-id: ${CLIENT_ID}
+  client-email: ${CLIENT_EMAIL}
   private-key: ${PRIVATE_KEY}
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT}
 
-spring:
-  r2dbc:
-    url: "r2dbc:postgresql://${db.host}:5432/${db.database}"
-    username: ${db.username}
-    password: ${db.password}
 
 logging:
   level:

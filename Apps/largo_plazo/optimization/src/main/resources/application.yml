@@ -1,23 +1,5 @@
-db:
-  host: ${HOST_DB}
-  port: ${PORT_DB}
-  database: ${DATABASE_NAME}
-  username: ${DATABASE_USERNAME}
-  password: ${DATABASE_PASSWORD}
-
-bigquery:
-  project-id: ${PROJECT_ID}
-  client-id: ${CLIENT_ID}
-  client-email: ${CLIENT_EMAIL}
-  private-key: ${PRIVATE_KEY}
-server:
-  port: ${SERVER_PORT:8080}
 
 spring:
-  r2dbc:
-    url: "r2dbc:postgresql://${db.host}:5432/${db.database}"
-    username: ${db.username}
-    password: ${db.password}
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
@@ -33,6 +15,26 @@ spring:
           starttls:
             enable: ${MAIL_SMPT_STARTTLS_ENABLE}
             required: ${MAIL_SMPT_STARTTLS_REQUIRED}
+
+db:
+  port: ${PORT_DB}
+  database: ${DATABASE_NAME}
+  username: ${DATABASE_USERNAME}
+  password: ${DATABASE_PASSWORD}
+  project: ${DATABASE_PROJECT}
+  region: ${DATABASE_REGION}
+  instance: ${DATABASE_INSTANCE}
+  url: "r2dbc:gcp:postgres://${db.username}:${db.password}@${db.project}:${db.region}:${db.instance}/${db.database}"
+
+
+bigquery:
+  project-id: ${PROJECT_ID}
+  client-id: ${CLIENT_ID}
+  client-email: ${CLIENT_EMAIL}
+  private-key: ${PRIVATE_KEY}
+server:
+  port: ${SERVER_PORT}
+
 
 logging:
   level:
