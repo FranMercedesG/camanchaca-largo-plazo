@@ -3,18 +3,31 @@ package cl.camanchaca.optimization.entrypoints.rest;
 import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.usecases.optimization.GetSelectedPeriodUseCase;
 import cl.camanchaca.business.usecases.optimization.GetVersionByPeriodSelectedUseCase;
+import cl.camanchaca.business.usecases.shared.ReadExcel;
+import cl.camanchaca.business.usecases.shared.ReadExcelV2;
+import cl.camanchaca.domain.models.demand.UnrestrictedDemandOfficeExcel;
+import cl.camanchaca.domain.models.optimization.DemandPeriod;
 import cl.camanchaca.generics.MainErrorhandler;
 import cl.camanchaca.optimization.validation.OptimizationValidations;
+import cl.camanchaca.utils.InputStreamUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
 @RequiredArgsConstructor
@@ -61,5 +74,6 @@ public class PeriodController {
                             .onErrorResume(errorhandler::badRequest);
                 });
     }
+
 
 }

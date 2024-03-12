@@ -2,11 +2,14 @@ package cl.camanchaca.optimization.validation;
 
 import cl.camanchaca.business.generic.Constans;
 import cl.camanchaca.business.generic.RequestParams;
+import cl.camanchaca.domain.models.optimization.DemandPeriod;
 import cl.camanchaca.domain.models.optimization.EmailSender;
 import cl.camanchaca.generics.errors.InfraestructureException;
 import cl.camanchaca.generics.errors.InfrastructureError;
 import cl.camanchaca.utils.LocalDateUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.reactive.function.server.ServerRequest;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
@@ -104,4 +107,48 @@ public class OptimizationValidations {
 
 
     private OptimizationValidations(){}
+
+    public static Mono<RequestParams> validateGetAll(ServerRequest request, RequestParams params) {
+        return Mono.fromCallable(() -> request.queryParam("page")
+                        .get())
+                .map(page -> {
+                    int pageInt = Integer.parseInt(page);
+                    int pageSize = Integer.parseInt(request.queryParam(Constans.PAGE_SIZE.getValue()).get());
+
+                    if (pageInt <= 0 || pageSize <= 0) {
+                        throw new InfraestructureException(Constans.PAGE_ERROR.getValue());
+                    }
+
+                    String dv = request.queryParam("dv").orElse(Strings.EMPTY);
+
+                    return params.toBuilder()
+                            .page(pageInt)
+                            .size(pageSize)
+                            .dv(dv)
+                            .build();
+                })
+                .onErrorResume(throwable -> Mono.error(new InfrastructureError("02")));
+    }
+
+    public static Flux<DemandPeriod> validateDemandPeriod(Flux<DemandPeriod> availableBiomassFlux) {
+        return availableBiomassFlux.map(data -> {
+
+                    if(Objects.isNull(data.getUnrestrictedDemandId())){
+                        Mono.error(new InfraestructureException("El id de la demanda no puede ser nulo"));
+                    }
+
+                    data.getPeriods()
+                            .forEach(availableBiomass ->
+                                    Stream.of(
+                                            availableBiomass.getPeriod(),
+                                            availableBiomass.getStatus()
+                                    ).forEach(Objects::requireNonNull)
+                            );
+
+                    return data;
+                })
+                .onErrorResume(throwable -> Mono.error(new InfrastructureError("03")));
+    }
+
+
 }

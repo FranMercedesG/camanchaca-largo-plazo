@@ -24,4 +24,5 @@ public class RequestParams {
     private String toEmail;
     private String subject;
     private String text;
+    private String dv;
 }

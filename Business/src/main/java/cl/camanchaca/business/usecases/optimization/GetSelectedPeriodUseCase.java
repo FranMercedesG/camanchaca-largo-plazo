@@ -27,6 +27,19 @@ public class GetSelectedPeriodUseCase {
                     return Mono.just(ParametersResponse.of(getMonthsBetweenTwoDates(period.getInitialPeriod(), period.getFinalPeriod()), 1L));
                 });
     }
+
+    public Mono<List<LocalDate>> getSelectedMonths(Map<String, String> header) {
+
+        return periodRepository.getSelectedPeriodByUser(header.get(Constans.USER.getValue()))
+                .collectList()
+                .flatMap(periods -> {
+                    if (periods.isEmpty()) {
+                        return Mono.just(Collections.emptyList());
+                    }
+                    Period period = periods.get(0);
+                    return Mono.just((getMonthsBetweenTwoDates(period.getInitialPeriod(), period.getFinalPeriod())));
+                });
+    }
     private List<LocalDate> getMonthsBetweenTwoDates(LocalDate initialDate, LocalDate finalDate) {
         List<LocalDate> months = new ArrayList<>();
         YearMonth currentMonth = YearMonth.from(initialDate);

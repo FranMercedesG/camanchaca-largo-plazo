@@ -99,7 +99,7 @@ public class UnrestrictedDataAdapter implements UnrestrictedDemandRepository {
 
     @Override
     public Mono<Long> count() {
-        return null;
+        return unrestrictedDataRepository.count();
     }
 
     @Override
